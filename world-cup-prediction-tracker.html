@@ -515,6 +515,26 @@
       background: #fbfcfb;
     }
 
+    .prediction-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .text-button {
+      min-height: 30px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 850;
+      color: var(--green);
+      background: #f3faf7;
+      border-color: #c9e6da;
+    }
+
     .prediction-row {
       display: grid;
       grid-template-columns: minmax(105px, 1fr) auto auto auto;
@@ -893,7 +913,11 @@
       "2026-06-13|c|haiti|scotland": { syz: [0, 2], lpr: [1, 1] },
       "2026-06-13|d|australia|turkey": { syz: [2, 2], lpr: [3, 2] },
       "2026-06-13|c|brazil|morocco": { syz: [0, 5], lpr: [0, 4] },
-      "2026-06-13|b|qatar|switzerland": { syz: [1, 1], lpr: [0, 3] }
+      "2026-06-13|b|qatar|switzerland": { syz: [1, 1], lpr: [0, 3] },
+      "2026-06-14|e|germany|curacao": { wby: [6, 1], lpr: [2, 1], czy: [4, 0], syz: [9, 1] },
+      "2026-06-14|f|netherlands|japan": { wby: [2, 1] },
+      "2026-06-14|e|ivory coast|ecuador": { wby: [2, 1] },
+      "2026-06-14|f|sweden|tunisia": { wby: [3, 0] }
     };
     const CORRECTED_PREDICTIONS_BY_SIGNATURE = {
       "2026-06-13|b|qatar|switzerland": { wby: [0, 1], lpr: [1, 1], syz: [0, 2] },
@@ -1020,6 +1044,7 @@
     let currentParticipant = localStorage.getItem(`${STORAGE_KEY}-participant`) || "wby";
     let apiAvailable = false;
     let saveTimer = null;
+    const expandedMatches = new Set();
 
     function loadData() {
       try {
@@ -1187,6 +1212,20 @@
       return kickoff ? new Date() < kickoff : true;
     }
 
+    function finalScoreLocked(match) {
+      if (hasActual(match)) return true;
+      const kickoff = kickoffAt(match);
+      if (!kickoff) return true;
+      const expectedFullTime = new Date(kickoff.getTime() + 2 * 60 * 60 * 1000);
+      return new Date() < expectedFullTime;
+    }
+
+    function finalScoreTitle(match) {
+      if (hasActual(match)) return "Historical final score is locked";
+      if (finalScoreLocked(match)) return "Final score unlocks about 2 hours after kickoff";
+      return currentParticipant === "wby" ? "Final score" : "Only WBY can edit final scores";
+    }
+
     function predictionWindow(match) {
       const kickoff = kickoffAt(match);
       if (!kickoff) return { state: "locked", label: "Set kickoff time" };
@@ -1332,9 +1371,14 @@
       }
 
       matchList.innerHTML = matches.map(match => {
-        const friends = data.friends.filter(friend => focus === "all" || friend.id === focus);
-        const actualLocked = isUpcoming(match) || currentParticipant !== "wby";
-        const actualTitle = isUpcoming(match) ? "Final score unlocks after kickoff" : currentParticipant === "wby" ? "Final score" : "Only WBY can edit final scores";
+        const allFriends = data.friends.filter(friend => focus === "all" || friend.id === focus);
+        const expanded = expandedMatches.has(match.id) || focus !== "all";
+        const currentFriend = data.friends.find(friend => friend.id === currentParticipant);
+        const friends = expanded ? allFriends : allFriends.filter(friend => friend.id === currentParticipant);
+        const hiddenCount = Math.max(allFriends.length - friends.length, 0);
+        const scoreLocked = finalScoreLocked(match);
+        const actualLocked = scoreLocked || currentParticipant !== "wby";
+        const actualTitle = finalScoreTitle(match);
         return `
           <article class="match-card">
             <div class="match-summary">
@@ -1358,6 +1402,14 @@
               </div>
             </div>
             <div class="predictions">
+              ${focus === "all" ? `
+                <div class="prediction-header">
+                  <span>${expanded ? "All predictions" : `${escapeHtml(currentFriend?.name || "Your")} prediction`}</span>
+                  <button class="text-button" type="button" data-action="toggle-predictions" data-match="${match.id}">
+                    ${expanded ? "Hide others" : `Show others (${hiddenCount})`}
+                  </button>
+                </div>
+              ` : ""}
               ${friends.map(friend => predictionMarkup(match, friend)).join("")}
             </div>
           </article>
@@ -1563,7 +1615,7 @@
       if (!match && !action.includes("prediction")) return false;
 
       if ((action === "actual-home" || action === "actual-away") && currentParticipant !== "wby") return false;
-      if ((action === "actual-home" || action === "actual-away") && isUpcoming(match)) return false;
+      if ((action === "actual-home" || action === "actual-away") && finalScoreLocked(match)) return false;
       if (action === "actual-home") match.actualHome = normalizeScore(target.value);
       if (action === "actual-away") match.actualAway = normalizeScore(target.value);
       if (action === "edit-date") match.date = target.value;
@@ -1626,6 +1678,12 @@
 
       const button = event.target.closest("button[data-action]");
       if (!button) return;
+      const action = button.dataset.action;
+      if (action === "toggle-predictions") {
+        if (expandedMatches.has(button.dataset.match)) expandedMatches.delete(button.dataset.match);
+        else expandedMatches.add(button.dataset.match);
+        renderMatches();
+      }
     });
 
     document.addEventListener("submit", event => {
