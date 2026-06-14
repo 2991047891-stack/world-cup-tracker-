@@ -1213,17 +1213,23 @@
     }
 
     function finalScoreLocked(match) {
-      if (hasActual(match)) return true;
+      return finalScoreWindow(match).locked;
+    }
+
+    function finalScoreWindow(match) {
       const kickoff = kickoffAt(match);
-      if (!kickoff) return true;
-      const expectedFullTime = new Date(kickoff.getTime() + 2 * 60 * 60 * 1000);
-      return new Date() < expectedFullTime;
+      if (!kickoff) return { locked: true, label: "Set kickoff time" };
+      const now = new Date();
+      const closes = new Date(kickoff.getTime() + 4 * 60 * 60 * 1000);
+      if (now < kickoff) return { locked: true, label: `Final score unlocks ${formatDateTime(kickoff)}` };
+      if (now >= closes) return { locked: true, label: "Historical final score is locked" };
+      return { locked: false, label: `Final score editable until ${formatTime(closes)} LA` };
     }
 
     function finalScoreTitle(match) {
-      if (hasActual(match)) return "Historical final score is locked";
-      if (finalScoreLocked(match)) return "Final score unlocks about 2 hours after kickoff";
-      return currentParticipant === "wby" ? "Final score" : "Only WBY can edit final scores";
+      const windowState = finalScoreWindow(match);
+      if (windowState.locked) return windowState.label;
+      return currentParticipant === "wby" ? windowState.label : "Only WBY can edit final scores";
     }
 
     function predictionWindow(match) {
