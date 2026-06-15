@@ -170,7 +170,7 @@
       "group": "C",
       "home": "Haiti",
       "away": "Scotland",
-      "actualHome": 0,
+      "actualHome": 1,
       "actualAway": 1,
       "time": "18:00"
     },
@@ -400,7 +400,7 @@
       "group": "G",
       "home": "Belgium",
       "away": "Egypt",
-      "actualHome": 0,
+      "actualHome": 1,
       "actualAway": 1,
       "time": "12:00"
     },
@@ -959,6 +959,22 @@
         "no"
       ],
       "points": 2,
+      "correctAnswer": ""
+    },
+    {
+      "id": "france-senegal-mbappe-goals",
+      "matchId": "m49",
+      "prompt": "How many goals will Mbappe score?",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "pointsLabel": "50% x goals",
+      "multiplier": 0.5,
       "correctAnswer": ""
     }
   ],
