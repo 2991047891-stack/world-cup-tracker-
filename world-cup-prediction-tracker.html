@@ -72,9 +72,9 @@
 
     .topbar {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) auto auto;
       gap: 16px;
-      align-items: end;
+      align-items: center;
       margin-bottom: 18px;
     }
 
@@ -103,6 +103,57 @@
       color: var(--muted);
       font-size: 16px;
       max-width: 720px;
+    }
+
+    .leader-spotlight {
+      display: grid;
+      justify-items: center;
+      gap: 5px;
+      min-width: 112px;
+    }
+
+    .leader-photo-wrap {
+      width: 108px;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--green-2);
+      display: grid;
+      place-items: center;
+      border: 1px solid #d8e5de;
+      box-shadow: 0 10px 24px rgba(23, 34, 29, .12);
+    }
+
+    .leader-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .leader-photo-fallback {
+      color: var(--green);
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .leader-spotlight p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+
+    .leader-spotlight span {
+      display: block;
+      margin-top: -2px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 850;
+      text-align: center;
     }
 
     .identity {
@@ -292,6 +343,29 @@
       min-width: 180px;
     }
 
+    .score-rule-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 5px 7px;
+      border: 1px solid #d8e5de;
+      background: #f7fbf9;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.25;
+    }
+
+    .score-rule-bar b {
+      color: var(--green);
+    }
+
+    .score-rule-bar span {
+      white-space: nowrap;
+    }
+
     .tab {
       border: 0;
       background: transparent;
@@ -394,10 +468,6 @@
     }
 
     .match-summary {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 12px;
-      align-items: center;
       padding: 13px;
       background: #fff;
     }
@@ -431,10 +501,48 @@
       border: 1px solid var(--line);
       background: #f7faf8;
       border-radius: 8px;
-      padding: 6px 8px;
+      padding: 6px;
       font-weight: 900;
-      min-width: 55px;
+      min-width: 82px;
       text-align: center;
+    }
+
+    .score-editor {
+      display: inline-grid;
+      grid-template-columns: 34px auto 34px;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .score-editor input {
+      width: 34px;
+      height: 34px;
+      min-height: 34px;
+      padding: 0;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 34px;
+      text-align: center;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .score-editor input::-webkit-outer-spin-button,
+    .score-editor input::-webkit-inner-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+    }
+
+    .score-editor b {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .score-editor.locked input {
+      background: #f0ece7;
+      color: #786f68;
+      cursor: not-allowed;
     }
 
     .match-meta {
@@ -482,25 +590,6 @@
     }
 
     .prediction-row.locked input {
-      background: #f0ece7;
-      color: #786f68;
-      cursor: not-allowed;
-    }
-
-    .actual {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .actual span {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .actual.locked input {
       background: #f0ece7;
       color: #786f68;
       cursor: not-allowed;
@@ -689,13 +778,21 @@
     .hidden { display: none !important; }
 
     @media (max-width: 920px) {
-      .topbar,
       .dashboard,
       .editor {
         grid-template-columns: 1fr;
       }
 
+      .topbar {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .leader-spotlight {
+        min-width: 0;
+      }
+
       .identity {
+        grid-column: 1 / -1;
         justify-content: flex-start;
       }
 
@@ -709,6 +806,23 @@
       .app {
         width: min(100vw - 18px, 1240px);
         padding-top: 12px;
+      }
+
+      .topbar {
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .leader-spotlight {
+        min-width: 90px;
+      }
+
+      .leader-photo-wrap {
+        width: 86px;
+      }
+
+      .leader-spotlight p {
+        font-size: 10px;
       }
 
       .date-strip {
@@ -725,12 +839,15 @@
         min-width: 0;
       }
 
+      .score-rule-bar {
+        width: 100%;
+      }
+
       .section-head {
         align-items: stretch;
         flex-direction: column;
       }
 
-      .match-summary,
       .prediction-row {
         grid-template-columns: 1fr;
       }
@@ -762,10 +879,6 @@
         text-align: center;
       }
 
-      .actual {
-        justify-content: center;
-      }
-
       .points {
         text-align: left;
       }
@@ -780,6 +893,14 @@
         <h1>Prediction Tracker</h1>
         <p class="subtitle">let's guess!</p>
       </div>
+      <section class="leader-spotlight" aria-label="Player of the Guess">
+        <div class="leader-photo-wrap">
+          <img id="leaderPhotoImg" alt="" hidden>
+          <div class="leader-photo-fallback" id="leaderPhotoFallback">--</div>
+        </div>
+        <p>the Player of the Guess</p>
+        <span id="leaderPhotoPoints">0 pts</span>
+      </section>
       <div class="identity">
         <span>Editing as <b id="identityName">LPR</b></span>
         <button class="ghost" id="switchIdentityBtn" type="button">Switch</button>
@@ -1097,9 +1218,20 @@
       <aside class="band">
         <div class="section-head">
           <h2>Table</h2>
-          <div class="tabs" role="tablist" aria-label="View">
-            <button class="tab active" data-tab="leaderboard" type="button">Rank</button>
-            <button class="tab" data-tab="accuracy" type="button">Stats</button>
+          <div class="section-tools">
+            <div class="tabs" role="tablist" aria-label="View">
+              <button class="tab active" data-tab="leaderboard" type="button">Rank</button>
+              <button class="tab" data-tab="accuracy" type="button">Stats</button>
+            </div>
+            <div class="score-rule-bar" aria-label="Point-counting rule">
+              <b>Score</b>
+              <span>Exact 5</span>
+              <span>Result +2</span>
+              <span>GD +1</span>
+              <span>Home +1</span>
+              <span>Away +1</span>
+              <span>Bonus by quiz</span>
+            </div>
           </div>
         </div>
         <div class="panel-body">
@@ -1301,6 +1433,9 @@
   <script>
     const STORAGE_KEY = "wc2026-prediction-tracker-v1";
     const PARTICIPANTS = ["WBY", "LPR", "SYZ", "CZY", "ZHY", "LJZ", "LHN", "CWT"];
+    const PLAYER_PHOTOS = {
+      syz: "assets/player-syz.jpeg"
+    };
     const HISTORICAL_RESULTS = {
       m01: [2, 0],
       m02: [2, 1],
@@ -1411,6 +1546,80 @@
       "2026-06-27|j|algeria|austria": "19:00",
       "2026-06-27|j|jordan|argentina": "19:00"
     };
+    const HOST_CITIES_BY_SIGNATURE = {
+      "2026-06-11|a|mexico|south africa": "Mexico City",
+      "2026-06-11|a|south korea|czech republic": "Guadalajara",
+      "2026-06-12|b|canada|bosnia and herzegovina": "Toronto",
+      "2026-06-12|d|united states|paraguay": "Los Angeles",
+      "2026-06-13|b|qatar|switzerland": "San Francisco Bay Area",
+      "2026-06-13|c|brazil|morocco": "New York/New Jersey",
+      "2026-06-13|c|haiti|scotland": "Boston",
+      "2026-06-13|d|australia|turkey": "Vancouver",
+      "2026-06-14|e|germany|curacao": "Houston",
+      "2026-06-14|f|netherlands|japan": "Dallas",
+      "2026-06-14|e|ivory coast|ecuador": "Philadelphia",
+      "2026-06-14|f|sweden|tunisia": "Monterrey",
+      "2026-06-15|h|spain|cape verde": "Atlanta",
+      "2026-06-15|g|belgium|egypt": "Seattle",
+      "2026-06-15|h|saudi arabia|uruguay": "Miami",
+      "2026-06-15|g|iran|new zealand": "Los Angeles",
+      "2026-06-16|i|france|senegal": "New York/New Jersey",
+      "2026-06-16|i|iraq|norway": "Boston",
+      "2026-06-16|j|argentina|algeria": "Kansas City",
+      "2026-06-16|j|austria|jordan": "San Francisco Bay Area",
+      "2026-06-17|k|portugal|dr congo": "Houston",
+      "2026-06-17|l|england|croatia": "Dallas",
+      "2026-06-17|l|ghana|panama": "Toronto",
+      "2026-06-17|k|uzbekistan|colombia": "Mexico City",
+      "2026-06-18|a|czech republic|south africa": "Atlanta",
+      "2026-06-18|b|switzerland|bosnia and herzegovina": "Los Angeles",
+      "2026-06-18|b|canada|qatar": "Vancouver",
+      "2026-06-18|a|mexico|south korea": "Guadalajara",
+      "2026-06-19|d|united states|australia": "Seattle",
+      "2026-06-19|c|scotland|morocco": "Boston",
+      "2026-06-19|c|brazil|haiti": "Philadelphia",
+      "2026-06-19|d|turkey|paraguay": "San Francisco Bay Area",
+      "2026-06-20|f|netherlands|sweden": "Houston",
+      "2026-06-20|e|germany|ivory coast": "Toronto",
+      "2026-06-20|e|ecuador|curacao": "Kansas City",
+      "2026-06-20|f|tunisia|japan": "Monterrey",
+      "2026-06-21|h|spain|saudi arabia": "Atlanta",
+      "2026-06-21|g|belgium|iran": "Los Angeles",
+      "2026-06-21|h|uruguay|cape verde": "Miami",
+      "2026-06-21|g|new zealand|egypt": "Vancouver",
+      "2026-06-22|j|argentina|austria": "Dallas",
+      "2026-06-22|i|france|iraq": "Philadelphia",
+      "2026-06-22|i|norway|senegal": "New York/New Jersey",
+      "2026-06-22|j|jordan|algeria": "San Francisco Bay Area",
+      "2026-06-23|k|portugal|uzbekistan": "Houston",
+      "2026-06-23|l|england|ghana": "Boston",
+      "2026-06-23|l|panama|croatia": "Toronto",
+      "2026-06-23|k|colombia|dr congo": "Guadalajara",
+      "2026-06-24|b|switzerland|canada": "Vancouver",
+      "2026-06-24|b|bosnia and herzegovina|qatar": "Seattle",
+      "2026-06-24|c|morocco|haiti": "Atlanta",
+      "2026-06-24|c|scotland|brazil": "Miami",
+      "2026-06-24|a|south africa|south korea": "Monterrey",
+      "2026-06-24|a|czech republic|mexico": "Mexico City",
+      "2026-06-25|e|curacao|ivory coast": "Philadelphia",
+      "2026-06-25|e|ecuador|germany": "New York/New Jersey",
+      "2026-06-25|f|tunisia|netherlands": "Kansas City",
+      "2026-06-25|f|japan|sweden": "Dallas",
+      "2026-06-25|d|turkey|united states": "Los Angeles",
+      "2026-06-25|d|paraguay|australia": "San Francisco Bay Area",
+      "2026-06-26|i|norway|france": "Boston",
+      "2026-06-26|i|senegal|iraq": "Toronto",
+      "2026-06-26|h|cape verde|saudi arabia": "Houston",
+      "2026-06-26|h|uruguay|spain": "Guadalajara",
+      "2026-06-26|g|new zealand|belgium": "Vancouver",
+      "2026-06-26|g|egypt|iran": "Seattle",
+      "2026-06-27|l|panama|england": "New York/New Jersey",
+      "2026-06-27|l|croatia|ghana": "Philadelphia",
+      "2026-06-27|k|colombia|portugal": "Miami",
+      "2026-06-27|k|dr congo|uzbekistan": "Atlanta",
+      "2026-06-27|j|algeria|austria": "Kansas City",
+      "2026-06-27|j|jordan|argentina": "Dallas"
+    };
     const SEEDED_PREDICTIONS_BY_FIXTURE = {
       "m01:syz": [3, 0],
       "m02:syz": [1, 2],
@@ -1455,6 +1664,15 @@
           prompt: "Will Gyökeres get a hat trick?",
           options: ["yes", "no"],
           points: 2
+        }
+      ],
+      "2026-06-16|i|france|senegal": [
+        {
+          id: "france-senegal-mbappe-goals",
+          prompt: "How many goals will Mbappe score?",
+          options: ["0", "1", "2", "3", "4", "5"],
+          pointsLabel: "50% x goals",
+          multiplier: 0.5
         }
       ]
     };
@@ -1513,7 +1731,7 @@
         { id: "m34", date: "2026-06-20", group: "F", home: "Tunisia", away: "Japan", actualHome: "", actualAway: "" },
         { id: "m35", date: "2026-06-25", group: "F", home: "Japan", away: "Sweden", actualHome: "", actualAway: "" },
         { id: "m36", date: "2026-06-25", group: "F", home: "Tunisia", away: "Netherlands", actualHome: "", actualAway: "" },
-        { id: "m37", date: "2026-06-15", group: "G", home: "Belgium", away: "Egypt", actualHome: 0, actualAway: 1 },
+        { id: "m37", date: "2026-06-15", group: "G", home: "Belgium", away: "Egypt", actualHome: 1, actualAway: 1 },
         { id: "m38", date: "2026-06-15", group: "G", home: "Iran", away: "New Zealand", actualHome: "", actualAway: "" },
         { id: "m39", date: "2026-06-21", group: "G", home: "Belgium", away: "Iran", actualHome: "", actualAway: "" },
         { id: "m40", date: "2026-06-21", group: "G", home: "New Zealand", away: "Egypt", actualHome: "", actualAway: "" },
@@ -1618,7 +1836,9 @@
         upgraded.matches.push(structuredClone(match));
       });
       upgraded.matches.forEach(match => {
-        match.time = MATCH_TIMES_LA_BY_SIGNATURE[fixtureSignature(match)] || match.time || "12:00";
+        const signature = fixtureSignature(match);
+        match.time = MATCH_TIMES_LA_BY_SIGNATURE[signature] || match.time || "12:00";
+        match.city = HOST_CITIES_BY_SIGNATURE[signature] || match.city || "";
         const result = HISTORICAL_RESULTS[match.id] || HISTORICAL_RESULTS_BY_FIXTURE[fixtureSignature(match)];
         if (result) {
           const [home, away] = result;
@@ -1687,6 +1907,8 @@
         prompt: question.prompt,
         options: question.options,
         points: question.points,
+        pointsLabel: question.pointsLabel,
+        multiplier: question.multiplier,
         correctAnswer: ""
       };
       if (existing) Object.assign(existing, base, { correctAnswer: existing.correctAnswer || "" });
@@ -1704,7 +1926,13 @@
     function bonusScore(question, friendId) {
       const answer = data.bonusAnswers[bonusKey(question.id, friendId)];
       if (!question.correctAnswer || !answer) return 0;
-      return answer === question.correctAnswer ? Number(question.points || 0) : 0;
+      if (answer !== question.correctAnswer) return 0;
+      if (question.multiplier !== undefined) return Number(answer) * Number(question.multiplier || 0);
+      return Number(question.points || 0);
+    }
+
+    function bonusPointsLabel(question) {
+      return question.pointsLabel || `+${question.points}`;
     }
 
     function saveData() {
@@ -1880,10 +2108,33 @@
     function render() {
       saveData();
       renderIdentity();
+      renderLeaderSpotlight();
       renderDateFilter();
       renderFilters();
       renderMatches();
       renderSidePanel();
+    }
+
+    function renderLeaderSpotlight() {
+      const leader = friendStats()[0];
+      const img = document.querySelector("#leaderPhotoImg");
+      const fallback = document.querySelector("#leaderPhotoFallback");
+      const points = document.querySelector("#leaderPhotoPoints");
+      if (!leader || !img || !fallback || !points) return;
+      const photo = PLAYER_PHOTOS[leader.id];
+      points.textContent = `${leader.points} pts`;
+      fallback.textContent = leader.name.slice(0, 3).toUpperCase();
+      if (photo) {
+        img.src = photo;
+        img.alt = `${leader.name}, the Player of the Guess`;
+        img.hidden = false;
+        fallback.hidden = true;
+      } else {
+        img.removeAttribute("src");
+        img.alt = "";
+        img.hidden = true;
+        fallback.hidden = false;
+      }
     }
 
     function renderIdentity() {
@@ -1971,24 +2222,25 @@
           <article class="match-card">
             <div class="match-summary">
               <div>
-                <div class="fixture">
-                  <div class="team" title="${escapeHtml(match.home)}">${teamLabel(match.home)}</div>
-                  <div class="versus" data-score-label="${match.id}">${hasActual(match) ? `${match.actualHome}-${match.actualAway}` : "vs"}</div>
-                  <div class="team" title="${escapeHtml(match.away)}">${teamLabel(match.away)}</div>
-                </div>
-                <div class="match-meta">
-                  <span class="pill">${escapeHtml(formatKickoff(match))}</span>
-                  <span class="pill">Group ${escapeHtml(match.group || "-")}</span>
-                  <span class="pill ${predictionWindow(match).state}">${escapeHtml(predictionWindow(match).label)}</span>
-                </div>
+	                <div class="fixture">
+	                  <div class="team" title="${escapeHtml(match.home)}">${teamLabel(match.home)}</div>
+	                  <div class="versus" data-score-label="${match.id}">
+	                    <span class="score-editor ${actualLocked ? "locked" : ""}">
+	                      <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualHome ?? ""))}" data-action="actual-home" data-match="${match.id}" title="${escapeHtml(actualTitle)}" placeholder="-" ${actualLocked ? "disabled" : ""}>
+	                      <b>-</b>
+	                      <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualAway ?? ""))}" data-action="actual-away" data-match="${match.id}" title="${escapeHtml(actualTitle)}" placeholder="-" ${actualLocked ? "disabled" : ""}>
+	                    </span>
+	                  </div>
+	                  <div class="team" title="${escapeHtml(match.away)}">${teamLabel(match.away)}</div>
+	                </div>
+	                <div class="match-meta">
+	                  <span class="pill">${escapeHtml(formatKickoff(match))}</span>
+	                  <span class="pill">Group ${escapeHtml(match.group || "-")}</span>
+	                  ${match.city ? `<span class="pill">${escapeHtml(match.city)}</span>` : ""}
+	                  <span class="pill ${predictionWindow(match).state}">${escapeHtml(predictionWindow(match).label)}</span>
+	                </div>
               </div>
-              <div class="actual ${actualLocked ? "locked" : ""}">
-                <span>Final</span>
-                <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualHome ?? ""))}" data-action="actual-home" data-match="${match.id}" title="${escapeHtml(actualTitle)}" ${actualLocked ? "disabled" : ""}>
-                <b>-</b>
-                <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualAway ?? ""))}" data-action="actual-away" data-match="${match.id}" title="${escapeHtml(actualTitle)}" ${actualLocked ? "disabled" : ""}>
-              </div>
-            </div>
+	            </div>
             <div class="predictions">
               ${focus === "all" ? `
                 <div class="prediction-header">
@@ -2029,7 +2281,7 @@
       return `
         <div class="bonus-block">
           <div class="bonus-title">
-            <div><span>Bonus +${question.points} · answer before kickoff</span> ${escapeHtml(question.prompt)}</div>
+            <div><span>Bonus ${escapeHtml(bonusPointsLabel(question))} · answer before kickoff</span> ${escapeHtml(question.prompt)}</div>
             <label>
               <span>Correct</span>
               <select data-action="bonus-correct" data-question="${question.id}" ${correctDisabled ? "disabled" : ""}>
@@ -2046,6 +2298,7 @@
     function bonusAnswerMarkup(match, question, friend, isAnswerLocked) {
       const answer = data.bonusAnswers[bonusKey(question.id, friend.id)] || "";
       const locked = isAnswerLocked || friend.id !== currentParticipant;
+      const points = bonusScore(question, friend.id);
       return `
         <div class="bonus-row">
           <div class="friend-name">${escapeHtml(friend.name)}</div>
@@ -2053,7 +2306,7 @@
             ${bonusOptionMarkup("", "Pick", answer)}
             ${question.options.map(option => bonusOptionMarkup(option, titleCase(option), answer)).join("")}
           </select>
-          <div class="bonus-points">${bonusScore(question, friend.id) ? `+${bonusScore(question, friend.id)}` : ""}</div>
+          <div class="bonus-points">${points ? `+${points}` : ""}</div>
         </div>
       `;
     }
@@ -2078,7 +2331,12 @@
       const match = data.matches.find(item => item.id === matchId);
       if (!match) return;
       const label = document.querySelector(`[data-score-label="${CSS.escape(matchId)}"]`);
-      if (label) label.textContent = hasActual(match) ? `${match.actualHome}-${match.actualAway}` : "vs";
+      if (label) {
+        const homeInput = label.querySelector('[data-action="actual-home"]');
+        const awayInput = label.querySelector('[data-action="actual-away"]');
+        if (homeInput) homeInput.value = match.actualHome ?? "";
+        if (awayInput) awayInput.value = match.actualAway ?? "";
+      }
       data.friends.forEach(friend => {
         const points = predictionScore(match, data.predictions[predictionKey(match.id, friend.id)]);
         const pointLabel = document.querySelector(`[data-score-point="${CSS.escape(match.id + ":" + friend.id)}"]`);
