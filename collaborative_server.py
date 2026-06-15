@@ -10,6 +10,7 @@ DATA_DIR = Path(os.environ.get("DATA_DIR", ROOT))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 STATE_FILE = DATA_DIR / "shared-predictions.json"
 SEED_FILE = ROOT / "shared-predictions.json"
+FALLBACK_STATIC_DIR = ROOT / "github-upload"
 
 
 class CollaborativeHandler(SimpleHTTPRequestHandler):
@@ -33,6 +34,13 @@ class CollaborativeHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(payload.encode("utf-8"))
             return
+
+        requested_path = self.path.split("?", 1)[0].lstrip("/")
+        if requested_path and not (ROOT / requested_path).exists():
+            fallback_file = FALLBACK_STATIC_DIR / requested_path
+            if fallback_file.is_file():
+                self.path = f"/github-upload/{requested_path}"
+
         super().do_GET()
 
     def do_POST(self):
@@ -48,6 +56,15 @@ class CollaborativeHandler(SimpleHTTPRequestHandler):
         except Exception:
             self.send_error(400, "Invalid JSON")
             return
+
+        if STATE_FILE.exists():
+            try:
+                existing = json.loads(STATE_FILE.read_text(encoding="utf-8"))
+            except Exception:
+                existing = {}
+            for key, expected_type in (("bonusQuestions", list), ("bonusAnswers", dict)):
+                if key not in payload and isinstance(existing.get(key), expected_type):
+                    payload[key] = existing[key]
 
         tmp = STATE_FILE.with_suffix(".tmp")
         tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")

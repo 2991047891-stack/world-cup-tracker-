@@ -1,30 +1,9 @@
-# World Cup Prediction Tracker Deployment
+# World Cup Prediction Tracker
 
-This folder is ready to deploy as a small hosted collaborative app.
+Upload the files inside this folder to the root of your GitHub repository. Do not upload the `github-upload` folder itself as a folder.
 
-## Recommended: Render
+The public app is served by `collaborative_server.py`, which keeps shared predictions in `shared-predictions.json` and exposes them through `/api/state`.
 
-1. Create a GitHub repository and upload the files in this `outputs` folder.
-2. Go to Render and create a new **Blueprint** from that repository.
-3. Render will read `render.yaml`, create a Python web service, and attach a persistent disk at `/var/data`.
-4. After deploy, open:
+After GitHub updates, open:
 
-   `https://YOUR-RENDER-SERVICE.onrender.com/world-cup-prediction-tracker.html`
-
-## Why the disk matters
-
-The app saves shared predictions in:
-
-`shared-predictions.json`
-
-On Render, new edits are written to `/var/data/shared-predictions.json`, so predictions survive restarts.
-
-## Local Run
-
-```bash
-python3 collaborative_server.py
-```
-
-Then open:
-
-`http://127.0.0.1:4180/world-cup-prediction-tracker.html`
+`https://world-cup-prediction-tracker.onrender.com/world-cup-prediction-tracker.html`

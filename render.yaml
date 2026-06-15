@@ -2,13 +2,11 @@ services:
   - type: web
     name: world-cup-prediction-tracker
     runtime: python
-    plan: starter
+    plan: free
     buildCommand: ""
-    startCommand: "python collaborative_server.py"
+    startCommand: python collaborative_server.py
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
       - key: DATA_DIR
-        value: /var/data
-    disk:
-      name: prediction-data
-      mountPath: /var/data
-      sizeGB: 1
+        value: /opt/render/project/src

@@ -280,8 +280,8 @@
       "group": "E",
       "home": "Germany",
       "away": "Curacao",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 7,
+      "actualAway": 1,
       "time": "10:00"
     },
     {
@@ -290,8 +290,8 @@
       "group": "E",
       "home": "Ivory Coast",
       "away": "Ecuador",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 1,
+      "actualAway": 0,
       "time": "16:00"
     },
     {
@@ -340,8 +340,8 @@
       "group": "F",
       "home": "Netherlands",
       "away": "Japan",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 2,
+      "actualAway": 2,
       "time": "13:00"
     },
     {
@@ -847,6 +847,74 @@
     "m13:wby": {
       "home": 2,
       "away": 2
+    },
+    "m25:lpr": {
+      "home": 2,
+      "away": 1
+    },
+    "m25:czy": {
+      "home": 4,
+      "away": 0
+    },
+    "m25:syz": {
+      "home": 9,
+      "away": 1
+    },
+    "m25:wby": {
+      "home": 6,
+      "away": 1
+    },
+    "m31:wby": {
+      "home": 2,
+      "away": 1
+    },
+    "m31:lpr": {
+      "home": 2,
+      "away": 1
+    },
+    "m31:syz": {
+      "home": 3,
+      "away": 2
+    },
+    "m31:czy": {
+      "home": 2,
+      "away": 2
+    },
+    "m26:wby": {
+      "home": 2,
+      "away": 1
+    },
+    "m32:wby": {
+      "home": 3,
+      "away": 0
+    },
+    "m26:lpr": {
+      "home": 1,
+      "away": 1
+    },
+    "m26:syz": {
+      "home": 1,
+      "away": 2
+    },
+    "m26:czy": {
+      "home": 0,
+      "away": 0
     }
+  },
+  "bonusQuestions": [
+    {
+      "id": "sweden-tunisia-gyokeres-hattrick",
+      "matchId": "m32",
+      "prompt": "Will Gyökeres get a hat trick?",
+      "options": [
+        "yes",
+        "no"
+      ],
+      "points": 2,
+      "correctAnswer": ""
+    }
+  ],
+  "bonusAnswers": {
+    "sweden-tunisia-gyokeres-hattrick:wby": "yes"
   }
 }
