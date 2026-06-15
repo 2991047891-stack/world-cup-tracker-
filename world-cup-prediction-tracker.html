@@ -1812,6 +1812,11 @@
       return { state: "open", label: `Open until ${formatTime(kickoff)} LA` };
     }
 
+    function bonusAnswerLocked(match) {
+      const kickoff = kickoffAt(match);
+      return !kickoff || new Date() >= kickoff;
+    }
+
     function predictionScore(match, prediction) {
       if (!hasActual(match) || !prediction || prediction.home === "" || prediction.away === "") return null;
       const actualHome = Number(match.actualHome);
@@ -2016,13 +2021,12 @@
     }
 
     function bonusMarkup(match, question, friends) {
-      const windowState = predictionWindow(match);
-      const isAnswerLocked = windowState.state !== "open";
+      const isAnswerLocked = bonusAnswerLocked(match) || predictionWindow(match).state !== "open";
       const correctDisabled = currentParticipant !== "wby" || new Date() < kickoffAt(match);
       return `
         <div class="bonus-block">
           <div class="bonus-title">
-            <div><span>Bonus +${question.points}</span> ${escapeHtml(question.prompt)}</div>
+            <div><span>Bonus +${question.points} · answer before kickoff</span> ${escapeHtml(question.prompt)}</div>
             <label>
               <span>Correct</span>
               <select data-action="bonus-correct" data-question="${question.id}" ${correctDisabled ? "disabled" : ""}>
@@ -2248,7 +2252,7 @@
 
       if (action === "bonus-answer") {
         if (!match || !question || target.dataset.friend !== currentParticipant) return false;
-        if (predictionWindow(match).state !== "open") return false;
+        if (bonusAnswerLocked(match) || predictionWindow(match).state !== "open") return false;
         const key = bonusKey(question.id, target.dataset.friend);
         if (target.value) data.bonusAnswers[key] = target.value;
         else delete data.bonusAnswers[key];
