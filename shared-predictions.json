@@ -400,8 +400,8 @@
       "group": "G",
       "home": "Belgium",
       "away": "Egypt",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 0,
+      "actualAway": 1,
       "time": "12:00"
     },
     {
@@ -460,8 +460,8 @@
       "group": "H",
       "home": "Spain",
       "away": "Cape Verde",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 0,
+      "actualAway": 0,
       "time": "09:00"
     },
     {
@@ -899,6 +899,54 @@
     "m26:czy": {
       "home": 0,
       "away": 0
+    },
+    "m32:lpr": {
+      "home": 1,
+      "away": 0
+    },
+    "m32:czy": {
+      "home": 2,
+      "away": 0
+    },
+    "m32:syz": {
+      "home": 1,
+      "away": 1
+    },
+    "m43:wby": {
+      "home": 6,
+      "away": 0
+    },
+    "m43:lpr": {
+      "home": 5,
+      "away": 0
+    },
+    "m43:syz": {
+      "home": 4,
+      "away": 0
+    },
+    "m37:wby": {
+      "home": 3,
+      "away": 1
+    },
+    "m37:lpr": {
+      "home": 2,
+      "away": 1
+    },
+    "m37:syz": {
+      "home": 1,
+      "away": 1
+    },
+    "m44:wby": {
+      "home": 1,
+      "away": 2
+    },
+    "m44:syz": {
+      "home": 0,
+      "away": 0
+    },
+    "m44:lpr": {
+      "home": 1,
+      "away": 2
     }
   },
   "bonusQuestions": [
