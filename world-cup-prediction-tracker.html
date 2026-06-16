@@ -1110,7 +1110,7 @@
               <div>
                 <div class="fixture">
                   <div class="team" title="Ivory Coast"><span class="flag" aria-hidden="true">🇨🇮</span>Ivory Coast</div>
-                  <div class="versus" data-score-label="m26">vs</div>
+                  <div class="versus" data-score-label="m26">1-0</div>
                   <div class="team" title="Ecuador"><span class="flag" aria-hidden="true">🇪🇨</span>Ecuador</div>
                 </div>
                 <div class="match-meta">
@@ -1121,9 +1121,9 @@
               </div>
               <div class="actual locked">
                 <span>Final</span>
-                <input type="number" min="0" inputmode="numeric" value="" data-action="actual-home" data-match="m26" title="Only WBY can edit final scores" disabled="">
+                <input type="number" min="0" inputmode="numeric" value="1" data-action="actual-home" data-match="m26" title="Historical final score is locked" disabled="">
                 <b>-</b>
-                <input type="number" min="0" inputmode="numeric" value="" data-action="actual-away" data-match="m26" title="Only WBY can edit final scores" disabled="">
+                <input type="number" min="0" inputmode="numeric" value="0" data-action="actual-away" data-match="m26" title="Historical final score is locked" disabled="">
               </div>
             </div>
             <div class="predictions">
@@ -1192,8 +1192,8 @@
             <label>
               <span>Correct</span>
               <select data-action="bonus-correct" data-question="sweden-tunisia-gyokeres-hattrick" disabled="">
-                <option value="" selected="">Pending</option>
-                <option value="yes">Yes</option><option value="no">No</option>
+                <option value="">Pending</option>
+                <option value="yes">Yes</option><option value="no" selected="">No</option>
               </select>
             </label>
           </div>
@@ -1432,6 +1432,8 @@
 
   <script>
     const STORAGE_KEY = "wc2026-prediction-tracker-v1";
+    const LA_TIME_ZONE = "America/Los_Angeles";
+    const LA_UTC_OFFSET = "-07:00";
     const PARTICIPANTS = ["WBY", "LPR", "SYZ", "CZY", "ZHY", "LJZ", "LHN", "CWT"];
     const PLAYER_PHOTOS = {
       syz: "assets/player-syz.jpeg"
@@ -1445,7 +1447,15 @@
       m14: [0, 1],
       m19: [4, 1],
       m20: [2, 0],
-      m25: [7, 1]
+      m25: [7, 1],
+      m26: [1, 0],
+      m31: [2, 2],
+      m32: [5, 1],
+      m37: [1, 1],
+      m38: [2, 2],
+      m44: [1, 1],
+      m43: [0, 0],
+      m49: [3, 1]
     };
     const HISTORICAL_RESULTS_BY_FIXTURE = {
       "2026-06-11|a|mexico|south africa": [2, 0],
@@ -1456,7 +1466,15 @@
       "2026-06-13|c|brazil|morocco": [1, 1],
       "2026-06-13|c|haiti|scotland": [0, 1],
       "2026-06-13|d|australia|turkey": [2, 0],
-      "2026-06-14|e|germany|curacao": [7, 1]
+      "2026-06-14|e|germany|curacao": [7, 1],
+      "2026-06-14|e|ivory coast|ecuador": [1, 0],
+      "2026-06-14|f|netherlands|japan": [2, 2],
+      "2026-06-14|f|sweden|tunisia": [5, 1],
+      "2026-06-15|g|belgium|egypt": [1, 1],
+      "2026-06-15|g|iran|new zealand": [2, 2],
+      "2026-06-15|h|saudi arabia|uruguay": [1, 1],
+      "2026-06-15|h|spain|cape verde": [0, 0],
+      "2026-06-16|i|france|senegal": [3, 1]
     };
     const WBY_INITIAL_PREDICTIONS = {
       m07: [1, 0],
@@ -1655,7 +1673,10 @@
       "2026-06-14|f|sweden|tunisia": { wby: [3, 0], lpr: [1, 0], czy: [2, 0], syz: [1, 1] },
       "2026-06-15|h|spain|cape verde": { wby: [6, 0], lpr: [5, 0], syz: [4, 0] },
       "2026-06-15|g|belgium|egypt": { wby: [3, 1], lpr: [2, 1], syz: [1, 1] },
-      "2026-06-15|h|saudi arabia|uruguay": { wby: [1, 2], syz: [0, 0], lpr: [1, 2] }
+      "2026-06-15|g|iran|new zealand": { wby: [2, 0], lpr: [1, 1], syz: [2, 0] },
+      "2026-06-15|h|saudi arabia|uruguay": { wby: [1, 2], syz: [0, 0], lpr: [1, 2] },
+      "2026-06-16|i|france|senegal": { wby: [3, 1], lpr: [3, 1], syz: [2, 2], czy: [3, 1] },
+      "2026-06-16|i|iraq|norway": { wby: [3, 0], lpr: [2, 1], syz: [4, 0], czy: [2, 0] }
     };
     const BONUS_QUESTIONS_BY_SIGNATURE = {
       "2026-06-14|f|sweden|tunisia": [
@@ -1663,7 +1684,8 @@
           id: "sweden-tunisia-gyokeres-hattrick",
           prompt: "Will Gyökeres get a hat trick?",
           options: ["yes", "no"],
-          points: 2
+          points: 2,
+          correctAnswer: "no"
         }
       ],
       "2026-06-16|i|france|senegal": [
@@ -1720,7 +1742,7 @@
         { id: "m23", date: "2026-06-25", group: "D", home: "Turkey", away: "United States", actualHome: "", actualAway: "" },
         { id: "m24", date: "2026-06-25", group: "D", home: "Paraguay", away: "Australia", actualHome: "", actualAway: "" },
         { id: "m25", date: "2026-06-14", group: "E", home: "Germany", away: "Curacao", actualHome: 7, actualAway: 1 },
-        { id: "m26", date: "2026-06-14", group: "E", home: "Ivory Coast", away: "Ecuador", actualHome: "", actualAway: "" },
+        { id: "m26", date: "2026-06-14", group: "E", home: "Ivory Coast", away: "Ecuador", actualHome: 1, actualAway: 0 },
         { id: "m27", date: "2026-06-20", group: "E", home: "Germany", away: "Ivory Coast", actualHome: "", actualAway: "" },
         { id: "m28", date: "2026-06-20", group: "E", home: "Ecuador", away: "Curacao", actualHome: "", actualAway: "" },
         { id: "m29", date: "2026-06-25", group: "E", home: "Curacao", away: "Ivory Coast", actualHome: "", actualAway: "" },
@@ -1732,18 +1754,18 @@
         { id: "m35", date: "2026-06-25", group: "F", home: "Japan", away: "Sweden", actualHome: "", actualAway: "" },
         { id: "m36", date: "2026-06-25", group: "F", home: "Tunisia", away: "Netherlands", actualHome: "", actualAway: "" },
         { id: "m37", date: "2026-06-15", group: "G", home: "Belgium", away: "Egypt", actualHome: 1, actualAway: 1 },
-        { id: "m38", date: "2026-06-15", group: "G", home: "Iran", away: "New Zealand", actualHome: "", actualAway: "" },
+        { id: "m38", date: "2026-06-15", group: "G", home: "Iran", away: "New Zealand", actualHome: 2, actualAway: 2 },
         { id: "m39", date: "2026-06-21", group: "G", home: "Belgium", away: "Iran", actualHome: "", actualAway: "" },
         { id: "m40", date: "2026-06-21", group: "G", home: "New Zealand", away: "Egypt", actualHome: "", actualAway: "" },
         { id: "m41", date: "2026-06-26", group: "G", home: "Egypt", away: "Iran", actualHome: "", actualAway: "" },
         { id: "m42", date: "2026-06-26", group: "G", home: "New Zealand", away: "Belgium", actualHome: "", actualAway: "" },
         { id: "m43", date: "2026-06-15", group: "H", home: "Spain", away: "Cape Verde", actualHome: 0, actualAway: 0 },
-        { id: "m44", date: "2026-06-15", group: "H", home: "Saudi Arabia", away: "Uruguay", actualHome: "", actualAway: "" },
+        { id: "m44", date: "2026-06-15", group: "H", home: "Saudi Arabia", away: "Uruguay", actualHome: 1, actualAway: 1 },
         { id: "m45", date: "2026-06-21", group: "H", home: "Spain", away: "Saudi Arabia", actualHome: "", actualAway: "" },
         { id: "m46", date: "2026-06-21", group: "H", home: "Uruguay", away: "Cape Verde", actualHome: "", actualAway: "" },
         { id: "m47", date: "2026-06-26", group: "H", home: "Cape Verde", away: "Saudi Arabia", actualHome: "", actualAway: "" },
         { id: "m48", date: "2026-06-26", group: "H", home: "Uruguay", away: "Spain", actualHome: "", actualAway: "" },
-        { id: "m49", date: "2026-06-16", group: "I", home: "France", away: "Senegal", actualHome: "", actualAway: "" },
+        { id: "m49", date: "2026-06-16", group: "I", home: "France", away: "Senegal", actualHome: 3, actualAway: 1 },
         { id: "m50", date: "2026-06-16", group: "I", home: "Iraq", away: "Norway", actualHome: "", actualAway: "" },
         { id: "m51", date: "2026-06-22", group: "I", home: "France", away: "Iraq", actualHome: "", actualAway: "" },
         { id: "m52", date: "2026-06-22", group: "I", home: "Norway", away: "Senegal", actualHome: "", actualAway: "" },
@@ -1791,10 +1813,23 @@
         "m13:lpr": { home: 0, away: 4 },
         "m08:lpr": { home: 0, away: 3 },
         "m07:czy": { home: 1, away: 1 },
-        "m19:czy": { home: 2, away: 1 }
+        "m19:czy": { home: 2, away: 1 },
+        "m38:wby": { home: 2, away: 0 },
+        "m38:lpr": { home: 1, away: 1 },
+        "m38:syz": { home: 2, away: 0 },
+        "m49:wby": { home: 3, away: 1 },
+        "m49:lpr": { home: 3, away: 1 },
+        "m49:syz": { home: 2, away: 2 },
+        "m49:czy": { home: 3, away: 1 },
+        "m50:wby": { home: 3, away: 0 },
+        "m50:lpr": { home: 2, away: 1 },
+        "m50:syz": { home: 4, away: 0 },
+        "m50:czy": { home: 2, away: 0 }
       },
       bonusQuestions: [],
-      bonusAnswers: {}
+      bonusAnswers: {
+        "france-senegal-mbappe-goals:wby": "2"
+      }
     };
 
     let data = loadData();
@@ -1909,9 +1944,9 @@
         points: question.points,
         pointsLabel: question.pointsLabel,
         multiplier: question.multiplier,
-        correctAnswer: ""
+        correctAnswer: question.correctAnswer || ""
       };
-      if (existing) Object.assign(existing, base, { correctAnswer: existing.correctAnswer || "" });
+      if (existing) Object.assign(existing, base, { correctAnswer: existing.correctAnswer || question.correctAnswer || "" });
       else currentData.bonusQuestions.push(base);
     }
 
@@ -2004,7 +2039,7 @@
 
     function kickoffAt(match) {
       const time = match.time || "12:00";
-      const parsed = new Date(`${match.date}T${time}`);
+      const parsed = new Date(`${match.date}T${time}:00${LA_UTC_OFFSET}`);
       return Number.isNaN(parsed.getTime()) ? null : parsed;
     }
 
@@ -2427,15 +2462,15 @@
     function formatKickoff(match) {
       const kickoff = kickoffAt(match);
       if (!kickoff) return formatDate(match.date);
-      return kickoff.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + ` · ${formatTime(kickoff)} LA`;
+      return kickoff.toLocaleDateString(undefined, { month: "short", day: "numeric", timeZone: LA_TIME_ZONE }) + ` · ${formatTime(kickoff)} LA`;
     }
 
     function formatDateTime(date) {
-      return date.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + ` · ${formatTime(date)} LA`;
+      return date.toLocaleDateString(undefined, { month: "short", day: "numeric", timeZone: LA_TIME_ZONE }) + ` · ${formatTime(date)} LA`;
     }
 
     function formatTime(date) {
-      return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+      return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", timeZone: LA_TIME_ZONE });
     }
 
     function teamLabel(team) {
@@ -2628,5 +2663,4 @@
   </script>
 
 
-</body>
-</html>
+</body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>

@@ -170,7 +170,7 @@
       "group": "C",
       "home": "Haiti",
       "away": "Scotland",
-      "actualHome": 1,
+      "actualHome": 0,
       "actualAway": 1,
       "time": "18:00"
     },
@@ -410,8 +410,8 @@
       "group": "G",
       "home": "Iran",
       "away": "New Zealand",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 2,
+      "actualAway": 2,
       "time": "18:00"
     },
     {
@@ -470,8 +470,8 @@
       "group": "H",
       "home": "Saudi Arabia",
       "away": "Uruguay",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 1,
+      "actualAway": 1,
       "time": "15:00"
     },
     {
@@ -520,8 +520,8 @@
       "group": "I",
       "home": "France",
       "away": "Senegal",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 3,
+      "actualAway": 1,
       "time": "12:00"
     },
     {
@@ -936,6 +936,18 @@
       "home": 1,
       "away": 1
     },
+    "m38:wby": {
+      "home": 2,
+      "away": 0
+    },
+    "m38:lpr": {
+      "home": 1,
+      "away": 1
+    },
+    "m38:syz": {
+      "home": 2,
+      "away": 0
+    },
     "m44:wby": {
       "home": 1,
       "away": 2
@@ -947,6 +959,38 @@
     "m44:lpr": {
       "home": 1,
       "away": 2
+    },
+    "m49:wby": {
+      "home": 3,
+      "away": 1
+    },
+    "m49:lpr": {
+      "home": 3,
+      "away": 1
+    },
+    "m49:syz": {
+      "home": 2,
+      "away": 2
+    },
+    "m49:czy": {
+      "home": 3,
+      "away": 1
+    },
+    "m50:wby": {
+      "home": 3,
+      "away": 0
+    },
+    "m50:lpr": {
+      "home": 2,
+      "away": 1
+    },
+    "m50:syz": {
+      "home": 4,
+      "away": 0
+    },
+    "m50:czy": {
+      "home": 2,
+      "away": 0
     }
   },
   "bonusQuestions": [
@@ -959,7 +1003,7 @@
         "no"
       ],
       "points": 2,
-      "correctAnswer": ""
+      "correctAnswer": "no"
     },
     {
       "id": "france-senegal-mbappe-goals",
@@ -979,6 +1023,7 @@
     }
   ],
   "bonusAnswers": {
-    "sweden-tunisia-gyokeres-hattrick:wby": "yes"
+    "sweden-tunisia-gyokeres-hattrick:wby": "yes",
+    "france-senegal-mbappe-goals:wby": "2"
   }
 }
