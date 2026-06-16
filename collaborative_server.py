@@ -13,13 +13,92 @@ SEED_FILE = ROOT / "shared-predictions.json"
 FALLBACK_STATIC_DIR = ROOT / "github-upload"
 
 
+def filled(value):
+    return value is not None and value != ""
+
+
+def fixture_key(match):
+    return "|".join(str(match.get(field, "")).strip().lower() for field in ("date", "group", "home", "away"))
+
+
+def merge_tracker_state(existing, incoming):
+    if not isinstance(existing, dict):
+        return incoming
+
+    merged = dict(incoming)
+
+    existing_friends = existing.get("friends")
+    if isinstance(existing_friends, list) and existing_friends:
+        merged["friends"] = existing_friends
+
+    existing_matches = existing.get("matches") if isinstance(existing.get("matches"), list) else []
+    incoming_matches = incoming.get("matches") if isinstance(incoming.get("matches"), list) else []
+    existing_by_id = {match.get("id"): match for match in existing_matches if match.get("id")}
+    incoming_ids = {match.get("id") for match in incoming_matches if match.get("id")}
+
+    for match in incoming_matches:
+        old = existing_by_id.get(match.get("id"))
+        if not old:
+            continue
+        for side in ("actualHome", "actualAway"):
+            if filled(old.get(side)):
+                match[side] = old.get(side)
+        for field in ("time", "city"):
+            if not filled(match.get(field)) and filled(old.get(field)):
+                match[field] = old.get(field)
+
+    existing_by_signature = {fixture_key(match): match for match in existing_matches}
+    incoming_signatures = {fixture_key(match) for match in incoming_matches}
+    for match in existing_matches:
+        if match.get("id") not in incoming_ids and fixture_key(match) not in incoming_signatures:
+            incoming_matches.append(match)
+    merged["matches"] = incoming_matches
+
+    predictions = dict(incoming.get("predictions") or {})
+    for key, old_prediction in (existing.get("predictions") or {}).items():
+        incoming_prediction = predictions.get(key)
+        if not incoming_prediction or not filled(incoming_prediction.get("home")) or not filled(incoming_prediction.get("away")):
+            predictions[key] = old_prediction
+    merged["predictions"] = predictions
+
+    bonus_questions = list(incoming.get("bonusQuestions") or [])
+    existing_questions = {question.get("id"): question for question in existing.get("bonusQuestions", []) if question.get("id")}
+    question_ids = {question.get("id") for question in bonus_questions}
+    for question in bonus_questions:
+        old = existing_questions.get(question.get("id"))
+        if old and filled(old.get("correctAnswer")):
+            question["correctAnswer"] = old.get("correctAnswer")
+    for question_id, question in existing_questions.items():
+        if question_id not in question_ids:
+            bonus_questions.append(question)
+    merged["bonusQuestions"] = bonus_questions
+
+    bonus_answers = dict(incoming.get("bonusAnswers") or {})
+    for key, answer in (existing.get("bonusAnswers") or {}).items():
+        if not filled(bonus_answers.get(key)):
+            bonus_answers[key] = answer
+    merged["bonusAnswers"] = bonus_answers
+
+    return merged
+
+
 class CollaborativeHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
 
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
+        origin = self.headers.get("Origin")
+        if origin in ("null", "https://world-cup-prediction-tracker.onrender.com"):
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
         super().end_headers()
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.end_headers()
 
     def do_GET(self):
         if self.path.split("?", 1)[0] == "/api/state":
@@ -62,9 +141,7 @@ class CollaborativeHandler(SimpleHTTPRequestHandler):
                 existing = json.loads(STATE_FILE.read_text(encoding="utf-8"))
             except Exception:
                 existing = {}
-            for key, expected_type in (("bonusQuestions", list), ("bonusAnswers", dict)):
-                if key not in payload and isinstance(existing.get(key), expected_type):
-                    payload[key] = existing[key]
+            payload = merge_tracker_state(existing, payload)
 
         tmp = STATE_FILE.with_suffix(".tmp")
         tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
