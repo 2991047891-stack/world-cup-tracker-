@@ -1152,7 +1152,7 @@
               <div>
                 <div class="fixture">
                   <div class="team" title="Sweden"><span class="flag" aria-hidden="true">🇸🇪</span>Sweden</div>
-                  <div class="versus" data-score-label="m32">vs</div>
+                  <div class="versus" data-score-label="m32">5-1</div>
                   <div class="team" title="Tunisia"><span class="flag" aria-hidden="true">🇹🇳</span>Tunisia</div>
                 </div>
                 <div class="match-meta">
@@ -1163,9 +1163,9 @@
               </div>
               <div class="actual locked">
                 <span>Final</span>
-                <input type="number" min="0" inputmode="numeric" value="" data-action="actual-home" data-match="m32" title="Final score unlocks Jun 14 · 7:00 PM LA" disabled="">
+                <input type="number" min="0" inputmode="numeric" value="5" data-action="actual-home" data-match="m32" title="Historical final score is locked" disabled="">
                 <b>-</b>
-                <input type="number" min="0" inputmode="numeric" value="" data-action="actual-away" data-match="m32" title="Final score unlocks Jun 14 · 7:00 PM LA" disabled="">
+                <input type="number" min="0" inputmode="numeric" value="1" data-action="actual-away" data-match="m32" title="Historical final score is locked" disabled="">
               </div>
             </div>
             <div class="predictions">
@@ -1726,7 +1726,7 @@
         { id: "m29", date: "2026-06-25", group: "E", home: "Curacao", away: "Ivory Coast", actualHome: "", actualAway: "" },
         { id: "m30", date: "2026-06-25", group: "E", home: "Ecuador", away: "Germany", actualHome: "", actualAway: "" },
         { id: "m31", date: "2026-06-14", group: "F", home: "Netherlands", away: "Japan", actualHome: 2, actualAway: 2 },
-        { id: "m32", date: "2026-06-14", group: "F", home: "Sweden", away: "Tunisia", actualHome: "", actualAway: "" },
+        { id: "m32", date: "2026-06-14", group: "F", home: "Sweden", away: "Tunisia", actualHome: 5, actualAway: 1 },
         { id: "m33", date: "2026-06-20", group: "F", home: "Netherlands", away: "Sweden", actualHome: "", actualAway: "" },
         { id: "m34", date: "2026-06-20", group: "F", home: "Tunisia", away: "Japan", actualHome: "", actualAway: "" },
         { id: "m35", date: "2026-06-25", group: "F", home: "Japan", away: "Sweden", actualHome: "", actualAway: "" },
@@ -2048,6 +2048,20 @@
       return !kickoff || new Date() >= kickoff;
     }
 
+    function bonusCorrectLocked(match) {
+      const kickoff = kickoffAt(match);
+      if (!kickoff) return true;
+      const closes = new Date(kickoff.getTime() + 4 * 60 * 60 * 1000);
+      return new Date() >= closes;
+    }
+
+    function bonusCorrectStatus(match) {
+      const kickoff = kickoffAt(match);
+      if (!kickoff) return "Set kickoff time";
+      const closes = new Date(kickoff.getTime() + 4 * 60 * 60 * 1000);
+      return new Date() >= closes ? "Correct closed" : `Correct open until ${formatTime(closes)} LA`;
+    }
+
     function predictionScore(match, prediction) {
       if (!hasActual(match) || !prediction || prediction.home === "" || prediction.away === "") return null;
       const actualHome = Number(match.actualHome);
@@ -2277,11 +2291,11 @@
 
     function bonusMarkup(match, question, friends) {
       const isAnswerLocked = bonusAnswerLocked(match) || predictionWindow(match).state !== "open";
-      const correctDisabled = currentParticipant !== "wby" || new Date() < kickoffAt(match);
+      const correctDisabled = currentParticipant !== "wby" || new Date() < kickoffAt(match) || bonusCorrectLocked(match);
       return `
         <div class="bonus-block">
           <div class="bonus-title">
-            <div><span>Bonus ${escapeHtml(bonusPointsLabel(question))} · answer before kickoff</span> ${escapeHtml(question.prompt)}</div>
+            <div><span>Bonus ${escapeHtml(bonusPointsLabel(question))} · answer before kickoff · ${escapeHtml(bonusCorrectStatus(match))}</span> ${escapeHtml(question.prompt)}</div>
             <label>
               <span>Correct</span>
               <select data-action="bonus-correct" data-question="${question.id}" ${correctDisabled ? "disabled" : ""}>

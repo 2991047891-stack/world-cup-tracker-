@@ -350,8 +350,8 @@
       "group": "F",
       "home": "Sweden",
       "away": "Tunisia",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 5,
+      "actualAway": 1,
       "time": "19:00"
     },
     {
