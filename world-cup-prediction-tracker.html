@@ -1434,6 +1434,7 @@
     const STORAGE_KEY = "wc2026-prediction-tracker-v1";
     const LA_TIME_ZONE = "America/Los_Angeles";
     const LA_UTC_OFFSET = "-07:00";
+    const HOSTED_API_ORIGIN = "https://world-cup-prediction-tracker.onrender.com";
     const PARTICIPANTS = ["WBY", "LPR", "SYZ", "CZY", "ZHY", "LJZ", "LHN", "CWT"];
     const PLAYER_PHOTOS = {
       syz: "assets/player-syz.jpeg"
@@ -1676,7 +1677,7 @@
       "2026-06-15|g|iran|new zealand": { wby: [2, 0], lpr: [1, 1], syz: [2, 0] },
       "2026-06-15|h|saudi arabia|uruguay": { wby: [1, 2], syz: [0, 0], lpr: [1, 2] },
       "2026-06-16|i|france|senegal": { wby: [3, 1], lpr: [3, 1], syz: [2, 2], czy: [3, 1] },
-      "2026-06-16|i|iraq|norway": { wby: [3, 0], lpr: [2, 1], syz: [4, 0], czy: [2, 0] }
+      "2026-06-16|i|iraq|norway": { wby: [0, 3], lpr: [1, 2], syz: [0, 4], czy: [0, 2] }
     };
     const BONUS_QUESTIONS_BY_SIGNATURE = {
       "2026-06-14|f|sweden|tunisia": [
@@ -1694,7 +1695,8 @@
           prompt: "How many goals will Mbappe score?",
           options: ["0", "1", "2", "3", "4", "5"],
           pointsLabel: "50% x goals",
-          multiplier: 0.5
+          multiplier: 0.5,
+          correctAnswer: "2"
         }
       ]
     };
@@ -1821,10 +1823,10 @@
         "m49:lpr": { home: 3, away: 1 },
         "m49:syz": { home: 2, away: 2 },
         "m49:czy": { home: 3, away: 1 },
-        "m50:wby": { home: 3, away: 0 },
-        "m50:lpr": { home: 2, away: 1 },
-        "m50:syz": { home: 4, away: 0 },
-        "m50:czy": { home: 2, away: 0 }
+        "m50:wby": { home: 0, away: 3 },
+        "m50:lpr": { home: 1, away: 2 },
+        "m50:syz": { home: 0, away: 4 },
+        "m50:czy": { home: 0, away: 2 }
       },
       bonusQuestions: [],
       bonusAnswers: {
@@ -1913,7 +1915,9 @@
         const predictions = CORRECTED_PREDICTIONS_BY_SIGNATURE[signature];
         if (predictions) {
           Object.entries(predictions).forEach(([friendId, score]) => {
-            upgraded.predictions[`${match.id}:${friendId}`] = { home: score[0], away: score[1] };
+            const key = `${match.id}:${friendId}`;
+            if (upgraded.predictions[key] && upgraded.predictions[key].home !== "" && upgraded.predictions[key].away !== "") return;
+            upgraded.predictions[key] = { home: score[0], away: score[1] };
           });
         }
         const clearedFriends = CLEARED_PREDICTIONS_BY_SIGNATURE[signature] || [];
@@ -1975,7 +1979,7 @@
       if (!apiAvailable) return;
       clearTimeout(saveTimer);
       saveTimer = setTimeout(() => {
-        fetch("/api/state", {
+        fetch(apiUrl("/api/state"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -1986,12 +1990,16 @@
     }
 
     async function loadSharedData() {
-      const response = await fetch("/api/state", { cache: "no-store" });
+      const response = await fetch(apiUrl("/api/state"), { cache: "no-store" });
       if (!response.ok) throw new Error("Shared state unavailable");
       const shared = await response.json();
       data = shared && Array.isArray(shared.friends) && Array.isArray(shared.matches) ? withStarterData(shared) : withStarterData(loadData());
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       apiAvailable = true;
+    }
+
+    function apiUrl(path) {
+      return location.protocol === "file:" ? `${HOSTED_API_ORIGIN}${path}` : path;
     }
 
     async function syncSharedData() {
@@ -2663,4 +2671,5 @@
   </script>
 
 
-</body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>
+</body>
+</html>

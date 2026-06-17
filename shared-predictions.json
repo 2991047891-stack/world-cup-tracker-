@@ -977,20 +977,20 @@
       "away": 1
     },
     "m50:wby": {
-      "home": 3,
-      "away": 0
+      "home": 0,
+      "away": 3
     },
     "m50:lpr": {
-      "home": 2,
-      "away": 1
+      "home": 1,
+      "away": 2
     },
     "m50:syz": {
-      "home": 4,
-      "away": 0
+      "home": 0,
+      "away": 4
     },
     "m50:czy": {
-      "home": 2,
-      "away": 0
+      "home": 0,
+      "away": 2
     }
   },
   "bonusQuestions": [
@@ -1019,7 +1019,7 @@
       ],
       "pointsLabel": "50% x goals",
       "multiplier": 0.5,
-      "correctAnswer": ""
+      "correctAnswer": "2"
     }
   ],
   "bonusAnswers": {
