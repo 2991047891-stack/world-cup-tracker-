@@ -41,7 +41,7 @@ def merge_tracker_state(existing, incoming):
         if not old:
             continue
         for side in ("actualHome", "actualAway"):
-            if filled(old.get(side)):
+            if not filled(match.get(side)) and filled(old.get(side)):
                 match[side] = old.get(side)
         for field in ("time", "city"):
             if not filled(match.get(field)) and filled(old.get(field)):
@@ -66,7 +66,7 @@ def merge_tracker_state(existing, incoming):
     question_ids = {question.get("id") for question in bonus_questions}
     for question in bonus_questions:
         old = existing_questions.get(question.get("id"))
-        if old and filled(old.get("correctAnswer")):
+        if old and not filled(question.get("correctAnswer")) and filled(old.get("correctAnswer")):
             question["correctAnswer"] = old.get("correctAnswer")
     for question_id, question in existing_questions.items():
         if question_id not in question_ids:

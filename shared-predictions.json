@@ -580,8 +580,8 @@
       "group": "J",
       "home": "Argentina",
       "away": "Algeria",
-      "actualHome": "",
-      "actualAway": "",
+      "actualHome": 3,
+      "actualAway": 0,
       "time": "18:00"
     },
     {
