@@ -335,7 +335,7 @@
 
     .tabs {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 4px;
       padding: 4px;
       background: #edf2ef;
@@ -387,17 +387,6 @@
     .leaderboard {
       display: grid;
       gap: 10px;
-    }
-
-    .table-content-grid {
-      display: grid;
-      grid-template-columns: minmax(260px, .85fr) minmax(340px, 1.15fr);
-      gap: 14px;
-      align-items: start;
-    }
-
-    .table-view-stack {
-      min-width: 0;
     }
 
     .points-chart {
@@ -870,10 +859,6 @@
         grid-template-columns: 1fr;
       }
 
-      .table-content-grid {
-        grid-template-columns: 1fr;
-      }
-
       .topbar {
         grid-template-columns: minmax(0, 1fr) auto;
       }
@@ -1317,6 +1302,7 @@
             <div class="tabs" role="tablist" aria-label="View">
               <button class="tab active" data-tab="leaderboard" type="button">Rank</button>
               <button class="tab" data-tab="accuracy" type="button">Stats</button>
+              <button class="tab" data-tab="graph" type="button">Graph</button>
             </div>
             <div class="score-rule-bar" aria-label="Point-counting rule">
               <b>Score</b>
@@ -1330,8 +1316,6 @@
           </div>
         </div>
         <div class="panel-body">
-          <div class="table-content-grid">
-            <div class="table-view-stack">
           <div id="leaderboardView">
         <div class="leaderboard">
           
@@ -1508,9 +1492,7 @@
           </table>
         </div>
       </div>
-            </div>
-            <section class="points-chart" id="pointsChart" aria-label="Cumulative points after each completed match"></section>
-          </div>
+          <section class="points-chart hidden" id="pointsChart" aria-label="Cumulative points after each completed match"></section>
         </div>
       </aside>
     </div>
@@ -2482,6 +2464,7 @@
       document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === activeTab));
       document.querySelector("#leaderboardView").classList.toggle("hidden", activeTab !== "leaderboard");
       document.querySelector("#accuracyView").classList.toggle("hidden", activeTab !== "accuracy");
+      document.querySelector("#pointsChart").classList.toggle("hidden", activeTab !== "graph");
       renderLeaderboard();
       renderAccuracy();
       renderPointsChart();
