@@ -389,6 +389,93 @@
       gap: 10px;
     }
 
+    .table-content-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, .85fr) minmax(340px, 1.15fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .table-view-stack {
+      min-width: 0;
+    }
+
+    .points-chart {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .points-chart h3 {
+      margin: 0 0 3px;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .points-chart-subtitle {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .points-chart svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      overflow: visible;
+    }
+
+    .chart-grid-line {
+      stroke: #e4eae7;
+      stroke-width: 1;
+    }
+
+    .chart-axis-label {
+      fill: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .chart-line {
+      fill: none;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .chart-dot {
+      stroke: #fff;
+      stroke-width: 1.5;
+    }
+
+    .chart-legend {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px 8px;
+      margin-top: 9px;
+    }
+
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .chart-legend-item i {
+      width: 14px;
+      height: 3px;
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+
     .leader-row {
       display: grid;
       grid-template-columns: 34px minmax(0, 1fr) auto;
@@ -783,6 +870,10 @@
         grid-template-columns: 1fr;
       }
 
+      .table-content-grid {
+        grid-template-columns: 1fr;
+      }
+
       .topbar {
         grid-template-columns: minmax(0, 1fr) auto;
       }
@@ -841,6 +932,10 @@
 
       .score-rule-bar {
         width: 100%;
+      }
+
+      .chart-legend {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .section-head {
@@ -1235,6 +1330,8 @@
           </div>
         </div>
         <div class="panel-body">
+          <div class="table-content-grid">
+            <div class="table-view-stack">
           <div id="leaderboardView">
         <div class="leaderboard">
           
@@ -1411,6 +1508,9 @@
           </table>
         </div>
       </div>
+            </div>
+            <section class="points-chart" id="pointsChart" aria-label="Cumulative points after each completed match"></section>
+          </div>
         </div>
       </aside>
     </div>
@@ -2068,6 +2168,7 @@
       const now = new Date();
       const closes = new Date(kickoff.getTime() + 4 * 60 * 60 * 1000);
       if (now < kickoff) return { locked: true, label: `Final score unlocks ${formatDateTime(kickoff)}` };
+      if (!hasActual(match)) return { locked: false, label: "Final score open until entered" };
       if (now >= closes) return { locked: true, label: "Historical final score is locked" };
       return { locked: false, label: `Final score editable until ${formatTime(closes)} LA` };
     }
@@ -2165,7 +2266,6 @@
     }
 
     function render() {
-      saveData();
       renderIdentity();
       renderLeaderSpotlight();
       renderDateFilter();
@@ -2384,6 +2484,101 @@
       document.querySelector("#accuracyView").classList.toggle("hidden", activeTab !== "accuracy");
       renderLeaderboard();
       renderAccuracy();
+      renderPointsChart();
+    }
+
+    function pointsHistory() {
+      const matches = data.matches
+        .filter(hasActual)
+        .sort((a, b) => kickoffAt(a) - kickoffAt(b) || fixtureDisplayOrder(a) - fixtureDisplayOrder(b));
+      const totals = Object.fromEntries(data.friends.map(friend => [friend.id, 0]));
+      const series = Object.fromEntries(data.friends.map(friend => [friend.id, [0]]));
+
+      matches.forEach(match => {
+        data.friends.forEach(friend => {
+          const score = predictionScore(match, data.predictions[predictionKey(match.id, friend.id)]);
+          totals[friend.id] += score === null ? 0 : score;
+          bonusQuestionsForMatch(match).forEach(question => {
+            totals[friend.id] += bonusScore(question, friend.id);
+          });
+          series[friend.id].push(totals[friend.id]);
+        });
+      });
+
+      return { matches, series };
+    }
+
+    function renderPointsChart() {
+      const chart = document.querySelector("#pointsChart");
+      if (!chart) return;
+      const { matches, series } = pointsHistory();
+      if (!matches.length) {
+        chart.innerHTML = `<h3>Points by match</h3><p class="points-chart-subtitle">Final results only</p><div class="empty">No completed matches yet.</div>`;
+        return;
+      }
+
+      const colors = ["#0f7b59", "#c88b22", "#2f6fc1", "#d95c43", "#00838f", "#7b5bb5", "#66756e", "#d14f86"];
+      const width = 720;
+      const height = 405;
+      const margin = { top: 18, right: 16, bottom: 42, left: 38 };
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+      const values = data.friends.flatMap(friend => series[friend.id]);
+      const maxPoints = Math.max(5, Math.ceil(Math.max(...values, 0) / 5) * 5);
+      const pointCount = matches.length + 1;
+      const x = index => margin.left + (index / Math.max(pointCount - 1, 1)) * plotWidth;
+      const y = value => margin.top + plotHeight - (value / maxPoints) * plotHeight;
+      const yTicks = 5;
+      const xStep = Math.max(1, Math.ceil(matches.length / 6));
+
+      const grid = Array.from({ length: yTicks + 1 }, (_, index) => {
+        const value = (maxPoints / yTicks) * index;
+        const py = y(value);
+        return `<line class="chart-grid-line" x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}"></line>
+          <text class="chart-axis-label" x="${margin.left - 7}" y="${py + 3}" text-anchor="end">${formatPoints(value)}</text>`;
+      }).join("");
+
+      const xLabels = matches.map((match, index) => {
+        const position = index + 1;
+        if (position !== matches.length && position % xStep !== 0) return "";
+        return `<text class="chart-axis-label" x="${x(position)}" y="${height - 16}" text-anchor="middle">M${position}</text>`;
+      }).join("");
+
+      const lines = data.friends.map((friend, friendIndex) => {
+        const points = series[friend.id];
+        const color = colors[friendIndex % colors.length];
+        const polyline = points.map((value, index) => `${x(index)},${y(value)}`).join(" ");
+        const dots = points.slice(1).map((value, index) => {
+          const match = matches[index];
+          const matchLabel = `${match.home} ${match.actualHome}-${match.actualAway} ${match.away}`;
+          return `<circle class="chart-dot" cx="${x(index + 1)}" cy="${y(value)}" r="3" fill="${color}">
+            <title>${escapeHtml(friend.name)} · M${index + 1} · ${escapeHtml(matchLabel)} · ${formatPoints(value)} pts</title>
+          </circle>`;
+        }).join("");
+        return `<polyline class="chart-line" points="${polyline}" stroke="${color}"></polyline>${dots}`;
+      }).join("");
+
+      const legend = data.friends.map((friend, index) => `
+        <div class="chart-legend-item">
+          <i style="background:${colors[index % colors.length]}"></i>
+          <span>${escapeHtml(friend.name)}</span>
+        </div>
+      `).join("");
+
+      chart.innerHTML = `
+        <h3>Points by match</h3>
+        <p class="points-chart-subtitle">Cumulative points after each final result · M = completed match</p>
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Eight-player cumulative points line graph">
+          ${grid}
+          ${xLabels}
+          ${lines}
+        </svg>
+        <div class="chart-legend">${legend}</div>
+      `;
+    }
+
+    function formatPoints(value) {
+      return Number.isInteger(value) ? String(value) : value.toFixed(1);
     }
 
     function refreshMatchScores(matchId) {
@@ -2607,6 +2802,7 @@
       }
 
       if (!handleDataEdit(event.target)) return;
+      saveData();
       render();
     });
 

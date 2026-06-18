@@ -42,7 +42,8 @@
       "away": "South Africa",
       "actualHome": 2,
       "actualAway": 0,
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Mexico City"
     },
     {
       "id": "m02",
@@ -52,7 +53,8 @@
       "away": "Czech Republic",
       "actualHome": 2,
       "actualAway": 1,
-      "time": "19:00"
+      "time": "19:00",
+      "city": "Guadalajara"
     },
     {
       "id": "m03",
@@ -60,9 +62,10 @@
       "group": "A",
       "home": "Czech Republic",
       "away": "South Africa",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "09:00"
+      "actualHome": 1,
+      "actualAway": 1,
+      "time": "09:00",
+      "city": "Atlanta"
     },
     {
       "id": "m04",
@@ -72,7 +75,8 @@
       "away": "South Korea",
       "actualHome": "",
       "actualAway": "",
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Guadalajara"
     },
     {
       "id": "m05",
@@ -82,7 +86,8 @@
       "away": "Mexico",
       "actualHome": "",
       "actualAway": "",
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Mexico City"
     },
     {
       "id": "m06",
@@ -92,7 +97,8 @@
       "away": "South Korea",
       "actualHome": "",
       "actualAway": "",
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Monterrey"
     },
     {
       "id": "m07",
@@ -102,7 +108,8 @@
       "away": "Bosnia and Herzegovina",
       "actualHome": 1,
       "actualAway": 1,
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Toronto"
     },
     {
       "id": "m08",
@@ -112,7 +119,8 @@
       "away": "Switzerland",
       "actualHome": 1,
       "actualAway": 1,
-      "time": "12:00"
+      "time": "12:00",
+      "city": "San Francisco Bay Area"
     },
     {
       "id": "m09",
@@ -120,9 +128,10 @@
       "group": "B",
       "home": "Switzerland",
       "away": "Bosnia and Herzegovina",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "12:00"
+      "actualHome": 4,
+      "actualAway": 1,
+      "time": "12:00",
+      "city": "Los Angeles"
     },
     {
       "id": "m10",
@@ -130,9 +139,10 @@
       "group": "B",
       "home": "Canada",
       "away": "Qatar",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "15:00"
+      "actualHome": 2,
+      "actualAway": 0,
+      "time": "15:00",
+      "city": "Vancouver"
     },
     {
       "id": "m11",
@@ -142,7 +152,8 @@
       "away": "Canada",
       "actualHome": "",
       "actualAway": "",
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Vancouver"
     },
     {
       "id": "m12",
@@ -152,7 +163,8 @@
       "away": "Qatar",
       "actualHome": "",
       "actualAway": "",
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Seattle"
     },
     {
       "id": "m13",
@@ -162,7 +174,8 @@
       "away": "Morocco",
       "actualHome": 1,
       "actualAway": 1,
-      "time": "15:00"
+      "time": "15:00",
+      "city": "New York/New Jersey"
     },
     {
       "id": "m14",
@@ -172,7 +185,8 @@
       "away": "Scotland",
       "actualHome": 0,
       "actualAway": 1,
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Boston"
     },
     {
       "id": "m15",
@@ -182,7 +196,8 @@
       "away": "Morocco",
       "actualHome": "",
       "actualAway": "",
-      "time": "15:00"
+      "time": "15:00",
+      "city": "Boston"
     },
     {
       "id": "m16",
@@ -192,7 +207,8 @@
       "away": "Haiti",
       "actualHome": "",
       "actualAway": "",
-      "time": "17:30"
+      "time": "17:30",
+      "city": "Philadelphia"
     },
     {
       "id": "m17",
@@ -202,7 +218,8 @@
       "away": "Brazil",
       "actualHome": "",
       "actualAway": "",
-      "time": "15:00"
+      "time": "15:00",
+      "city": "Miami"
     },
     {
       "id": "m18",
@@ -212,7 +229,8 @@
       "away": "Haiti",
       "actualHome": "",
       "actualAway": "",
-      "time": "15:00"
+      "time": "15:00",
+      "city": "Atlanta"
     },
     {
       "id": "m19",
@@ -222,7 +240,8 @@
       "away": "Paraguay",
       "actualHome": 4,
       "actualAway": 1,
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Los Angeles"
     },
     {
       "id": "m20",
@@ -232,7 +251,8 @@
       "away": "Turkey",
       "actualHome": 2,
       "actualAway": 0,
-      "time": "21:00"
+      "time": "21:00",
+      "city": "Vancouver"
     },
     {
       "id": "m21",
@@ -242,7 +262,8 @@
       "away": "Australia",
       "actualHome": "",
       "actualAway": "",
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Seattle"
     },
     {
       "id": "m22",
@@ -252,7 +273,8 @@
       "away": "Paraguay",
       "actualHome": "",
       "actualAway": "",
-      "time": "20:00"
+      "time": "20:00",
+      "city": "San Francisco Bay Area"
     },
     {
       "id": "m23",
@@ -262,7 +284,8 @@
       "away": "United States",
       "actualHome": "",
       "actualAway": "",
-      "time": "19:00"
+      "time": "19:00",
+      "city": "Los Angeles"
     },
     {
       "id": "m24",
@@ -272,7 +295,8 @@
       "away": "Australia",
       "actualHome": "",
       "actualAway": "",
-      "time": "19:00"
+      "time": "19:00",
+      "city": "San Francisco Bay Area"
     },
     {
       "id": "m25",
@@ -282,7 +306,8 @@
       "away": "Curacao",
       "actualHome": 7,
       "actualAway": 1,
-      "time": "10:00"
+      "time": "10:00",
+      "city": "Houston"
     },
     {
       "id": "m26",
@@ -292,7 +317,8 @@
       "away": "Ecuador",
       "actualHome": 1,
       "actualAway": 0,
-      "time": "16:00"
+      "time": "16:00",
+      "city": "Philadelphia"
     },
     {
       "id": "m27",
@@ -302,7 +328,8 @@
       "away": "Ivory Coast",
       "actualHome": "",
       "actualAway": "",
-      "time": "13:00"
+      "time": "13:00",
+      "city": "Toronto"
     },
     {
       "id": "m28",
@@ -312,7 +339,8 @@
       "away": "Curacao",
       "actualHome": "",
       "actualAway": "",
-      "time": "17:00"
+      "time": "17:00",
+      "city": "Kansas City"
     },
     {
       "id": "m29",
@@ -322,7 +350,8 @@
       "away": "Ivory Coast",
       "actualHome": "",
       "actualAway": "",
-      "time": "13:00"
+      "time": "13:00",
+      "city": "Philadelphia"
     },
     {
       "id": "m30",
@@ -332,7 +361,8 @@
       "away": "Germany",
       "actualHome": "",
       "actualAway": "",
-      "time": "13:00"
+      "time": "13:00",
+      "city": "New York/New Jersey"
     },
     {
       "id": "m31",
@@ -342,7 +372,8 @@
       "away": "Japan",
       "actualHome": 2,
       "actualAway": 2,
-      "time": "13:00"
+      "time": "13:00",
+      "city": "Dallas"
     },
     {
       "id": "m32",
@@ -352,7 +383,8 @@
       "away": "Tunisia",
       "actualHome": 5,
       "actualAway": 1,
-      "time": "19:00"
+      "time": "19:00",
+      "city": "Monterrey"
     },
     {
       "id": "m33",
@@ -362,7 +394,8 @@
       "away": "Sweden",
       "actualHome": "",
       "actualAway": "",
-      "time": "10:00"
+      "time": "10:00",
+      "city": "Houston"
     },
     {
       "id": "m34",
@@ -372,7 +405,8 @@
       "away": "Japan",
       "actualHome": "",
       "actualAway": "",
-      "time": "21:00"
+      "time": "21:00",
+      "city": "Monterrey"
     },
     {
       "id": "m35",
@@ -382,7 +416,8 @@
       "away": "Sweden",
       "actualHome": "",
       "actualAway": "",
-      "time": "16:00"
+      "time": "16:00",
+      "city": "Dallas"
     },
     {
       "id": "m36",
@@ -392,7 +427,8 @@
       "away": "Netherlands",
       "actualHome": "",
       "actualAway": "",
-      "time": "16:00"
+      "time": "16:00",
+      "city": "Kansas City"
     },
     {
       "id": "m37",
@@ -402,7 +438,8 @@
       "away": "Egypt",
       "actualHome": 1,
       "actualAway": 1,
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Seattle"
     },
     {
       "id": "m38",
@@ -412,7 +449,8 @@
       "away": "New Zealand",
       "actualHome": 2,
       "actualAway": 2,
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Los Angeles"
     },
     {
       "id": "m39",
@@ -422,7 +460,8 @@
       "away": "Iran",
       "actualHome": "",
       "actualAway": "",
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Los Angeles"
     },
     {
       "id": "m40",
@@ -432,7 +471,8 @@
       "away": "Egypt",
       "actualHome": "",
       "actualAway": "",
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Vancouver"
     },
     {
       "id": "m41",
@@ -442,7 +482,8 @@
       "away": "Iran",
       "actualHome": "",
       "actualAway": "",
-      "time": "20:00"
+      "time": "20:00",
+      "city": "Seattle"
     },
     {
       "id": "m42",
@@ -452,7 +493,8 @@
       "away": "Belgium",
       "actualHome": "",
       "actualAway": "",
-      "time": "20:00"
+      "time": "20:00",
+      "city": "Vancouver"
     },
     {
       "id": "m43",
@@ -462,7 +504,8 @@
       "away": "Cape Verde",
       "actualHome": 0,
       "actualAway": 0,
-      "time": "09:00"
+      "time": "09:00",
+      "city": "Atlanta"
     },
     {
       "id": "m44",
@@ -472,7 +515,8 @@
       "away": "Uruguay",
       "actualHome": 1,
       "actualAway": 1,
-      "time": "15:00"
+      "time": "15:00",
+      "city": "Miami"
     },
     {
       "id": "m45",
@@ -482,7 +526,8 @@
       "away": "Saudi Arabia",
       "actualHome": "",
       "actualAway": "",
-      "time": "09:00"
+      "time": "09:00",
+      "city": "Atlanta"
     },
     {
       "id": "m46",
@@ -492,7 +537,8 @@
       "away": "Cape Verde",
       "actualHome": "",
       "actualAway": "",
-      "time": "15:00"
+      "time": "15:00",
+      "city": "Miami"
     },
     {
       "id": "m47",
@@ -502,7 +548,8 @@
       "away": "Saudi Arabia",
       "actualHome": "",
       "actualAway": "",
-      "time": "17:00"
+      "time": "17:00",
+      "city": "Houston"
     },
     {
       "id": "m48",
@@ -512,7 +559,8 @@
       "away": "Spain",
       "actualHome": "",
       "actualAway": "",
-      "time": "17:00"
+      "time": "17:00",
+      "city": "Guadalajara"
     },
     {
       "id": "m49",
@@ -522,7 +570,8 @@
       "away": "Senegal",
       "actualHome": 3,
       "actualAway": 1,
-      "time": "12:00"
+      "time": "12:00",
+      "city": "New York/New Jersey"
     },
     {
       "id": "m50",
@@ -530,9 +579,10 @@
       "group": "I",
       "home": "Iraq",
       "away": "Norway",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "15:00"
+      "actualHome": 1,
+      "actualAway": 4,
+      "time": "15:00",
+      "city": "Boston"
     },
     {
       "id": "m51",
@@ -542,7 +592,8 @@
       "away": "Iraq",
       "actualHome": "",
       "actualAway": "",
-      "time": "14:00"
+      "time": "14:00",
+      "city": "Philadelphia"
     },
     {
       "id": "m52",
@@ -552,7 +603,8 @@
       "away": "Senegal",
       "actualHome": "",
       "actualAway": "",
-      "time": "17:00"
+      "time": "17:00",
+      "city": "New York/New Jersey"
     },
     {
       "id": "m53",
@@ -562,7 +614,8 @@
       "away": "France",
       "actualHome": "",
       "actualAway": "",
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Boston"
     },
     {
       "id": "m54",
@@ -572,7 +625,8 @@
       "away": "Iraq",
       "actualHome": "",
       "actualAway": "",
-      "time": "12:00"
+      "time": "12:00",
+      "city": "Toronto"
     },
     {
       "id": "m55",
@@ -582,7 +636,8 @@
       "away": "Algeria",
       "actualHome": 3,
       "actualAway": 0,
-      "time": "18:00"
+      "time": "18:00",
+      "city": "Kansas City"
     },
     {
       "id": "m56",
@@ -590,9 +645,10 @@
       "group": "J",
       "home": "Austria",
       "away": "Jordan",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "21:00"
+      "actualHome": 3,
+      "actualAway": 1,
+      "time": "21:00",
+      "city": "San Francisco Bay Area"
     },
     {
       "id": "m57",
@@ -602,7 +658,8 @@
       "away": "Austria",
       "actualHome": "",
       "actualAway": "",
-      "time": "10:00"
+      "time": "10:00",
+      "city": "Dallas"
     },
     {
       "id": "m58",
@@ -612,7 +669,8 @@
       "away": "Algeria",
       "actualHome": "",
       "actualAway": "",
-      "time": "20:00"
+      "time": "20:00",
+      "city": "San Francisco Bay Area"
     },
     {
       "id": "m59",
@@ -622,7 +680,8 @@
       "away": "Austria",
       "actualHome": "",
       "actualAway": "",
-      "time": "19:00"
+      "time": "19:00",
+      "city": "Kansas City"
     },
     {
       "id": "m60",
@@ -632,7 +691,8 @@
       "away": "Argentina",
       "actualHome": "",
       "actualAway": "",
-      "time": "19:00"
+      "time": "19:00",
+      "city": "Dallas"
     },
     {
       "id": "m61",
@@ -640,9 +700,10 @@
       "group": "K",
       "home": "Portugal",
       "away": "DR Congo",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "10:00"
+      "actualHome": 1,
+      "actualAway": 1,
+      "time": "10:00",
+      "city": "Houston"
     },
     {
       "id": "m62",
@@ -650,9 +711,10 @@
       "group": "K",
       "home": "Uzbekistan",
       "away": "Colombia",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "19:00"
+      "actualHome": 1,
+      "actualAway": 3,
+      "time": "19:00",
+      "city": "Mexico City"
     },
     {
       "id": "m63",
@@ -662,7 +724,8 @@
       "away": "Uzbekistan",
       "actualHome": "",
       "actualAway": "",
-      "time": "10:00"
+      "time": "10:00",
+      "city": "Houston"
     },
     {
       "id": "m64",
@@ -672,7 +735,8 @@
       "away": "DR Congo",
       "actualHome": "",
       "actualAway": "",
-      "time": "19:00"
+      "time": "19:00",
+      "city": "Guadalajara"
     },
     {
       "id": "m65",
@@ -682,7 +746,8 @@
       "away": "Portugal",
       "actualHome": "",
       "actualAway": "",
-      "time": "16:30"
+      "time": "16:30",
+      "city": "Miami"
     },
     {
       "id": "m66",
@@ -692,7 +757,8 @@
       "away": "Uzbekistan",
       "actualHome": "",
       "actualAway": "",
-      "time": "16:30"
+      "time": "16:30",
+      "city": "Atlanta"
     },
     {
       "id": "m67",
@@ -700,9 +766,10 @@
       "group": "L",
       "home": "England",
       "away": "Croatia",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "13:00"
+      "actualHome": 4,
+      "actualAway": 2,
+      "time": "13:00",
+      "city": "Dallas"
     },
     {
       "id": "m68",
@@ -710,9 +777,10 @@
       "group": "L",
       "home": "Ghana",
       "away": "Panama",
-      "actualHome": "",
-      "actualAway": "",
-      "time": "16:00"
+      "actualHome": 1,
+      "actualAway": 0,
+      "time": "16:00",
+      "city": "Toronto"
     },
     {
       "id": "m69",
@@ -722,7 +790,8 @@
       "away": "Ghana",
       "actualHome": "",
       "actualAway": "",
-      "time": "13:00"
+      "time": "13:00",
+      "city": "Boston"
     },
     {
       "id": "m70",
@@ -732,7 +801,8 @@
       "away": "Croatia",
       "actualHome": "",
       "actualAway": "",
-      "time": "16:00"
+      "time": "16:00",
+      "city": "Toronto"
     },
     {
       "id": "m71",
@@ -742,7 +812,8 @@
       "away": "England",
       "actualHome": "",
       "actualAway": "",
-      "time": "14:00"
+      "time": "14:00",
+      "city": "New York/New Jersey"
     },
     {
       "id": "m72",
@@ -752,7 +823,8 @@
       "away": "Ghana",
       "actualHome": "",
       "actualAway": "",
-      "time": "14:00"
+      "time": "14:00",
+      "city": "Philadelphia"
     }
   ],
   "predictions": {
@@ -991,6 +1063,166 @@
     "m50:czy": {
       "home": 0,
       "away": 2
+    },
+    "m55:wby": {
+      "home": 3,
+      "away": 1
+    },
+    "m55:lpr": {
+      "home": 2,
+      "away": 1
+    },
+    "m55:syz": {
+      "home": 1,
+      "away": 2
+    },
+    "m55:czy": {
+      "home": 1,
+      "away": 1
+    },
+    "m56:wby": {
+      "home": 1,
+      "away": 0
+    },
+    "m56:lpr": {
+      "home": 2,
+      "away": 0
+    },
+    "m56:czy": {
+      "home": 2,
+      "away": 0
+    },
+    "m56:syz": {
+      "home": 3,
+      "away": 0
+    },
+    "m61:wby": {
+      "home": 3,
+      "away": 0
+    },
+    "m68:wby": {
+      "home": 1,
+      "away": 1
+    },
+    "m62:wby": {
+      "home": 0,
+      "away": 2
+    },
+    "m67:wby": {
+      "home": 3,
+      "away": 0
+    },
+    "m61:syz": {
+      "home": 3,
+      "away": 1
+    },
+    "m67:syz": {
+      "home": 3,
+      "away": 0
+    },
+    "m68:syz": {
+      "home": 2,
+      "away": 0
+    },
+    "m62:syz": {
+      "home": 1,
+      "away": 1
+    },
+    "m61:czy": {
+      "home": 3,
+      "away": 0
+    },
+    "m67:czy": {
+      "home": 3,
+      "away": 1
+    },
+    "m68:czy": {
+      "home": 2,
+      "away": 1
+    },
+    "m62:czy": {
+      "home": 1,
+      "away": 3
+    },
+    "m68:lpr": {
+      "home": 2,
+      "away": 0
+    },
+    "m62:lpr": {
+      "home": 1,
+      "away": 3
+    },
+    "m61:lpr": {
+      "home": 4,
+      "away": 0
+    },
+    "m67:lpr": {
+      "home": 3,
+      "away": 0
+    },
+    "m03:syz": {
+      "home": 2,
+      "away": 1
+    },
+    "m03:wby": {
+      "home": 2,
+      "away": 1
+    },
+    "m09:wby": {
+      "home": 1,
+      "away": 0
+    },
+    "m10:wby": {
+      "home": 1,
+      "away": 1
+    },
+    "m04:wby": {
+      "home": 2,
+      "away": 2
+    },
+    "m03:czy": {
+      "home": 2,
+      "away": 2
+    },
+    "m09:czy": {
+      "home": 3,
+      "away": 1
+    },
+    "m10:czy": {
+      "home": 2,
+      "away": 1
+    },
+    "m04:czy": {
+      "home": 1,
+      "away": 1
+    },
+    "m09:lpr": {
+      "home": 2,
+      "away": 2
+    },
+    "m10:lpr": {
+      "home": 1,
+      "away": 1
+    },
+    "m04:lpr": {
+      "home": 2,
+      "away": 1
+    },
+    "m10:syz": {
+      "home": 2,
+      "away": 0
+    },
+    "m04:syz": {
+      "home": 3,
+      "away": 1
+    },
+    "m21:syz": {
+      "home": 3,
+      "away": 1
+    },
+    "m03:lpr": {
+      "home": 2,
+      "away": 1
     }
   },
   "bonusQuestions": [
