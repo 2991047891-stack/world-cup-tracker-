@@ -410,11 +410,34 @@
       font-weight: 700;
     }
 
+    .points-chart-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 7px;
+      scrollbar-width: thin;
+      scrollbar-color: #aebbb5 #edf2ef;
+      overscroll-behavior-inline: contain;
+    }
+
+    .points-chart-scroll::-webkit-scrollbar {
+      height: 9px;
+    }
+
+    .points-chart-scroll::-webkit-scrollbar-track {
+      background: #edf2ef;
+      border-radius: 8px;
+    }
+
+    .points-chart-scroll::-webkit-scrollbar-thumb {
+      background: #aebbb5;
+      border-radius: 8px;
+    }
+
     .points-chart svg {
       display: block;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
+      max-width: none;
+      height: 405px;
       overflow: visible;
     }
 
@@ -2501,7 +2524,8 @@
       }
 
       const colors = ["#0f7b59", "#c88b22", "#2f6fc1", "#d95c43", "#00838f", "#7b5bb5", "#66756e", "#d14f86"];
-      const width = 720;
+      const matchSpacing = 46;
+      const width = Math.max(720, 70 + matches.length * matchSpacing);
       const height = 405;
       const margin = { top: 18, right: 16, bottom: 42, left: 38 };
       const plotWidth = width - margin.left - margin.right;
@@ -2512,7 +2536,7 @@
       const x = index => margin.left + (index / Math.max(pointCount - 1, 1)) * plotWidth;
       const y = value => margin.top + plotHeight - (value / maxPoints) * plotHeight;
       const yTicks = 5;
-      const xStep = Math.max(1, Math.ceil(matches.length / 6));
+      const xStep = matches.length > 48 ? 2 : 1;
 
       const grid = Array.from({ length: yTicks + 1 }, (_, index) => {
         const value = (maxPoints / yTicks) * index;
@@ -2550,12 +2574,14 @@
 
       chart.innerHTML = `
         <h3>Points by match</h3>
-        <p class="points-chart-subtitle">Cumulative points after each final result · M = completed match</p>
-        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Eight-player cumulative points line graph">
-          ${grid}
-          ${xLabels}
-          ${lines}
-        </svg>
+        <p class="points-chart-subtitle">Cumulative points after each final result · M = completed match · scroll horizontally</p>
+        <div class="points-chart-scroll" tabindex="0" aria-label="Scrollable match-by-match points graph">
+          <svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="Eight-player cumulative points line graph">
+            ${grid}
+            ${xLabels}
+            ${lines}
+          </svg>
+        </div>
         <div class="chart-legend">${legend}</div>
       `;
     }
