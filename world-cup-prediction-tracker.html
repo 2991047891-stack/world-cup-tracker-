@@ -2176,8 +2176,9 @@
       const active = document.activeElement;
       if (active && active.matches("input, select")) return;
       try {
+        const beforeSync = JSON.stringify(data);
         await loadSharedData();
-        render();
+        if (JSON.stringify(data) !== beforeSync) render();
       } catch (error) {
         apiAvailable = false;
       }
@@ -2580,6 +2581,8 @@
     function renderPointsChart() {
       const chart = document.querySelector("#pointsChart");
       if (!chart) return;
+      const previousViewport = chart.querySelector(".points-chart-scroll");
+      const previousScrollLeft = previousViewport ? previousViewport.scrollLeft : 0;
       const { matches, series } = pointsHistory();
       if (!matches.length) {
         chart.innerHTML = `<h3>Points by match</h3><p class="points-chart-subtitle">Final results only</p><div class="empty">No completed matches yet.</div>`;
@@ -2649,6 +2652,8 @@
         </div>
         <div class="chart-legend">${legend}</div>
       `;
+      const nextViewport = chart.querySelector(".points-chart-scroll");
+      if (nextViewport) nextViewport.scrollLeft = previousScrollLeft;
     }
 
     function formatPoints(value) {
@@ -2693,8 +2698,12 @@
     }
 
     function renderAccuracy() {
+      const view = document.querySelector("#accuracyView");
+      const previousViewport = view.querySelector(".table-wrap");
+      const previousScrollLeft = previousViewport ? previousViewport.scrollLeft : 0;
+      const previousScrollTop = previousViewport ? previousViewport.scrollTop : 0;
       const rows = friendStats();
-      document.querySelector("#accuracyView").innerHTML = `
+      view.innerHTML = `
         <div class="scroll-window">
           <div class="table-wrap" data-scroll-viewport tabindex="0" aria-label="Scrollable player statistics table">
             <table>
@@ -2724,6 +2733,11 @@
           </div>
         </div>
       `;
+      const nextViewport = view.querySelector(".table-wrap");
+      if (nextViewport) {
+        nextViewport.scrollLeft = previousScrollLeft;
+        nextViewport.scrollTop = previousScrollTop;
+      }
     }
 
     function formatDate(date) {
