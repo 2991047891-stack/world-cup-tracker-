@@ -301,6 +301,14 @@
       align-items: start;
     }
 
+    .dashboard > *,
+    .panel-body,
+    #accuracyView,
+    #pointsChart {
+      min-width: 0;
+      max-width: 100%;
+    }
+
     .band {
       background: rgba(255,255,255,.76);
       border: 1px solid rgba(217,225,221,.9);
@@ -415,12 +423,23 @@
       overflow-x: auto;
       overflow-y: hidden;
       height: 360px;
-      scrollbar-width: none;
+      scrollbar-width: thin;
       overscroll-behavior-inline: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
     }
 
     .points-chart-scroll::-webkit-scrollbar {
-      display: none;
+      height: 6px;
+    }
+
+    .points-chart-scroll::-webkit-scrollbar-track {
+      background: #edf2ef;
+    }
+
+    .points-chart-scroll::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background: #9db1a7;
     }
 
     .points-chart svg {
@@ -432,73 +451,11 @@
 
     .scroll-window {
       width: 100%;
+      max-width: 100%;
       overflow: hidden;
       border: 1px solid #dfe7e3;
       border-radius: 8px;
       background: #fbfcfb;
-    }
-
-    .scroll-control {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 8px;
-      min-height: 38px;
-      padding: 7px 10px;
-      border-top: 1px solid #dfe7e3;
-      background: #f2f6f4;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 850;
-    }
-
-    .scroll-control input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 20px;
-      min-height: 20px;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      accent-color: var(--green);
-      cursor: grab;
-    }
-
-    .scroll-control input[type="range"]:active {
-      cursor: grabbing;
-    }
-
-    .scroll-control input[type="range"]::-webkit-slider-runnable-track {
-      height: 5px;
-      border-radius: 4px;
-      background: #ccd9d3;
-    }
-
-    .scroll-control input[type="range"]::-webkit-slider-thumb {
-      width: 24px;
-      height: 16px;
-      margin-top: -5.5px;
-      border: 2px solid #fff;
-      border-radius: 6px;
-      background: var(--green);
-      box-shadow: 0 2px 6px rgba(20,32,27,.18);
-      -webkit-appearance: none;
-    }
-
-    .scroll-control input[type="range"]::-moz-range-track {
-      height: 5px;
-      border-radius: 4px;
-      background: #ccd9d3;
-    }
-
-    .scroll-control input[type="range"]::-moz-range-thumb {
-      width: 22px;
-      height: 14px;
-      border: 2px solid #fff;
-      border-radius: 6px;
-      background: var(--green);
-      box-shadow: 0 2px 6px rgba(20,32,27,.18);
     }
 
     .chart-grid-line {
@@ -900,7 +857,10 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
-      scrollbar-width: none;
+      scrollbar-width: thin;
+      overscroll-behavior-inline: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x pan-y;
     }
 
     .scroll-window .table-wrap {
@@ -909,7 +869,17 @@
     }
 
     .table-wrap::-webkit-scrollbar {
-      display: none;
+      width: 6px;
+      height: 6px;
+    }
+
+    .table-wrap::-webkit-scrollbar-track {
+      background: #edf2ef;
+    }
+
+    .table-wrap::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background: #9db1a7;
     }
 
     table {
@@ -1018,16 +988,25 @@
       }
 
       .points-chart {
-        padding: 9px;
+        padding: 5px;
       }
 
       .points-chart-scroll,
       .points-chart svg {
-        height: 280px;
+        height: 260px;
       }
 
       .table-wrap {
-        max-height: 340px;
+        max-height: 300px;
+      }
+
+      .panel-body {
+        padding: 6px;
+        overflow: hidden;
+      }
+
+      #accuracyView table {
+        min-width: 620px;
       }
 
       .section-head {
@@ -2609,9 +2588,9 @@
 
       const colors = ["#0f7b59", "#c88b22", "#2f6fc1", "#d95c43", "#00838f", "#7b5bb5", "#66756e", "#d14f86"];
       const matchSpacing = 46;
-      const width = Math.max(720, 70 + matches.length * matchSpacing);
+      const width = Math.max(680, 38 + matches.length * matchSpacing);
       const height = 405;
-      const margin = { top: 18, right: 16, bottom: 42, left: 38 };
+      const margin = { top: 18, right: 12, bottom: 42, left: 18 };
       const plotWidth = width - margin.left - margin.right;
       const plotHeight = height - margin.top - margin.bottom;
       const values = data.friends.flatMap(friend => series[friend.id]);
@@ -2626,7 +2605,7 @@
         const value = (maxPoints / yTicks) * index;
         const py = y(value);
         return `<line class="chart-grid-line" x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}"></line>
-          <text class="chart-axis-label" x="${margin.left - 7}" y="${py + 3}" text-anchor="end">${formatPoints(value)}</text>`;
+          <text class="chart-axis-label" x="${margin.left - 3}" y="${py + 3}" text-anchor="end">${formatPoints(value)}</text>`;
       }).join("");
 
       const xLabels = matches.map((match, index) => {
@@ -2667,44 +2646,13 @@
               ${lines}
             </svg>
           </div>
-          ${scrollControlMarkup("Move graph")}
         </div>
         <div class="chart-legend">${legend}</div>
       `;
-      setupScrollControl(chart);
     }
 
     function formatPoints(value) {
       return Number.isInteger(value) ? String(value) : value.toFixed(1);
-    }
-
-    function scrollControlMarkup(label) {
-      return `
-        <div class="scroll-control">
-          <span>Start</span>
-          <input type="range" min="0" max="1000" value="0" data-scroll-range aria-label="${escapeHtml(label)}">
-          <span>End</span>
-        </div>
-      `;
-    }
-
-    function setupScrollControl(root) {
-      const viewport = root.querySelector("[data-scroll-viewport]");
-      const range = root.querySelector("[data-scroll-range]");
-      if (!viewport || !range) return;
-
-      const updateRange = () => {
-        const maxScroll = Math.max(viewport.scrollWidth - viewport.clientWidth, 0);
-        range.disabled = maxScroll === 0;
-        range.value = maxScroll ? String(Math.round((viewport.scrollLeft / maxScroll) * 1000)) : "0";
-      };
-
-      range.addEventListener("input", () => {
-        const maxScroll = Math.max(viewport.scrollWidth - viewport.clientWidth, 0);
-        viewport.scrollLeft = (Number(range.value) / 1000) * maxScroll;
-      });
-      viewport.addEventListener("scroll", updateRange, { passive: true });
-      requestAnimationFrame(updateRange);
     }
 
     function refreshMatchScores(matchId) {
@@ -2774,10 +2722,8 @@
               </tbody>
             </table>
           </div>
-          ${scrollControlMarkup("Move statistics table")}
         </div>
       `;
-      setupScrollControl(document.querySelector("#accuracyView"));
     }
 
     function formatDate(date) {
