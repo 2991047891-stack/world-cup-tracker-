@@ -2169,9 +2169,63 @@
       const response = await fetch(apiUrl("/api/state"), { cache: "no-store" });
       if (!response.ok) throw new Error("Shared state unavailable");
       const shared = await response.json();
-      data = shared && Array.isArray(shared.friends) && Array.isArray(shared.matches) ? withStarterData(shared) : withStarterData(loadData());
+      const remoteData = shared && Array.isArray(shared.friends) && Array.isArray(shared.matches)
+        ? withStarterData(shared)
+        : withStarterData(structuredClone(starter));
+      const remoteSnapshot = JSON.stringify(remoteData);
+      data = mergeSharedData(remoteData, data);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       apiAvailable = true;
+      if (JSON.stringify(data) !== remoteSnapshot) {
+        fetch(apiUrl("/api/state"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        }).catch(() => {});
+      }
+    }
+
+    function mergeSharedData(remote, local) {
+      if (!local || !Array.isArray(local.matches)) return remote;
+      const merged = remote;
+      const localMatches = new Map(local.matches.map(match => [match.id, match]));
+
+      merged.matches.forEach(match => {
+        const saved = localMatches.get(match.id);
+        if (!saved) return;
+        ["actualHome", "actualAway", "time", "city"].forEach(field => {
+          if ((match[field] === "" || match[field] === undefined || match[field] === null) &&
+              saved[field] !== "" && saved[field] !== undefined && saved[field] !== null) {
+            match[field] = saved[field];
+          }
+        });
+      });
+
+      const remoteIds = new Set(merged.matches.map(match => match.id));
+      local.matches.forEach(match => {
+        if (!remoteIds.has(match.id)) merged.matches.push(structuredClone(match));
+      });
+
+      Object.entries(local.predictions || {}).forEach(([key, prediction]) => {
+        const online = merged.predictions[key];
+        if (!online || online.home === "" || online.away === "") {
+          merged.predictions[key] = structuredClone(prediction);
+        }
+      });
+
+      (local.bonusQuestions || []).forEach(question => {
+        const online = merged.bonusQuestions.find(item => item.id === question.id);
+        if (!online) {
+          merged.bonusQuestions.push(structuredClone(question));
+        } else if (!online.correctAnswer && question.correctAnswer) {
+          online.correctAnswer = question.correctAnswer;
+        }
+      });
+
+      Object.entries(local.bonusAnswers || {}).forEach(([key, answer]) => {
+        if (!merged.bonusAnswers[key]) merged.bonusAnswers[key] = answer;
+      });
+      return withStarterData(merged);
     }
 
     function apiUrl(path) {

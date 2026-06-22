@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import os
+from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -11,6 +12,8 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 STATE_FILE = DATA_DIR / "shared-predictions.json"
 SEED_FILE = ROOT / "shared-predictions.json"
 FALLBACK_STATIC_DIR = ROOT / "github-upload"
+BACKUP_DIR = DATA_DIR / "state-backups"
+MAX_BACKUPS = 20
 
 
 def filled(value):
@@ -82,6 +85,18 @@ def merge_tracker_state(existing, incoming):
     return merged
 
 
+def backup_state():
+    if not STATE_FILE.exists():
+        return
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    backup = BACKUP_DIR / f"shared-predictions-{stamp}.json"
+    backup.write_text(STATE_FILE.read_text(encoding="utf-8"), encoding="utf-8")
+    backups = sorted(BACKUP_DIR.glob("shared-predictions-*.json"), reverse=True)
+    for old_backup in backups[MAX_BACKUPS:]:
+        old_backup.unlink(missing_ok=True)
+
+
 class CollaborativeHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
@@ -143,6 +158,7 @@ class CollaborativeHandler(SimpleHTTPRequestHandler):
                 existing = {}
             payload = merge_tracker_state(existing, payload)
 
+        backup_state()
         tmp = STATE_FILE.with_suffix(".tmp")
         tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
         tmp.replace(STATE_FILE)
