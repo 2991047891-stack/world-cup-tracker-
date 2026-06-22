@@ -984,6 +984,10 @@
       "home": 1,
       "away": 1
     },
+    "m33:lpr": {
+      "home": 1,
+      "away": 2
+    },
     "m43:wby": {
       "home": 6,
       "away": 0
@@ -1064,6 +1068,10 @@
       "home": 0,
       "away": 2
     },
+    "m51:lpr": {
+      "home": 4,
+      "away": 0
+    },
     "m55:wby": {
       "home": 3,
       "away": 1
@@ -1095,6 +1103,10 @@
     "m56:syz": {
       "home": 3,
       "away": 0
+    },
+    "m57:lpr": {
+      "home": 2,
+      "away": 1
     },
     "m61:wby": {
       "home": 3,
