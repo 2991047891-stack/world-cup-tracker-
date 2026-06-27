@@ -2095,6 +2095,9 @@
       "2026-06-13|c|haiti|scotland": { lpr: [0, 4], syz: [0, 5] },
       "2026-06-13|d|australia|turkey": { wby: [0, 2], lpr: [0, 3], syz: [1, 1] }
     };
+    const STALE_PREDICTION_CORRECTIONS = {
+      "m53:wby": { from: { home: 2, away: 1 }, to: { home: 1, away: 2 } }
+    };
     const CLEARED_PREDICTIONS_BY_SIGNATURE = {
       "2026-06-13|c|haiti|scotland": ["wby"]
     };
@@ -2328,6 +2331,12 @@
         clearedFriends.forEach(friendId => {
           delete upgraded.predictions[`${match.id}:${friendId}`];
         });
+      });
+      Object.entries(STALE_PREDICTION_CORRECTIONS).forEach(([key, correction]) => {
+        const prediction = upgraded.predictions[key];
+        if (!prediction) return;
+        if (Number(prediction.home) !== correction.from.home || Number(prediction.away) !== correction.from.away) return;
+        upgraded.predictions[key] = structuredClone(correction.to);
       });
       upgraded.predictions = cleanPredictions(upgraded);
       return upgraded;
