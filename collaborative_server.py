@@ -64,6 +64,31 @@ def merge_tracker_state(existing, incoming):
             predictions[key] = old_prediction
     merged["predictions"] = predictions
 
+    existing_knockout_matches = existing.get("knockoutMatches") if isinstance(existing.get("knockoutMatches"), list) else []
+    incoming_knockout_matches = incoming.get("knockoutMatches") if isinstance(incoming.get("knockoutMatches"), list) else []
+    existing_knockout_by_id = {match.get("id"): match for match in existing_knockout_matches if match.get("id")}
+    incoming_knockout_ids = {match.get("id") for match in incoming_knockout_matches if match.get("id")}
+
+    for match in incoming_knockout_matches:
+        old = existing_knockout_by_id.get(match.get("id"))
+        if not old:
+            continue
+        for field in ("home", "away", "actualHome", "actualAway", "date", "time", "city"):
+            if not filled(match.get(field)) and filled(old.get(field)):
+                match[field] = old.get(field)
+
+    for match in existing_knockout_matches:
+        if match.get("id") not in incoming_knockout_ids:
+            incoming_knockout_matches.append(match)
+    merged["knockoutMatches"] = incoming_knockout_matches
+
+    knockout_predictions = dict(incoming.get("knockoutPredictions") or {})
+    for key, old_prediction in (existing.get("knockoutPredictions") or {}).items():
+        incoming_prediction = knockout_predictions.get(key)
+        if not incoming_prediction or not filled(incoming_prediction.get("home")) or not filled(incoming_prediction.get("away")):
+            knockout_predictions[key] = old_prediction
+    merged["knockoutPredictions"] = knockout_predictions
+
     bonus_questions = list(incoming.get("bonusQuestions") or [])
     existing_questions = {question.get("id"): question for question in existing.get("bonusQuestions", []) if question.get("id")}
     question_ids = {question.get("id") for question in bonus_questions}

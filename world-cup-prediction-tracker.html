@@ -244,6 +244,32 @@
       margin-bottom: 12px;
     }
 
+    .stage-switch {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      width: min(420px, 100%);
+      padding: 4px;
+      margin: 0 0 12px;
+      border-radius: 8px;
+      background: #edf2ef;
+    }
+
+    .stage-tab {
+      border: 0;
+      min-height: 38px;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 850;
+    }
+
+    .stage-tab.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 2px 7px rgba(20,32,27,.08);
+    }
+
     .date-label {
       color: var(--muted);
       font-size: 12px;
@@ -574,6 +600,228 @@
     .match-list {
       display: grid;
       gap: 12px;
+    }
+
+    .knockout-match-list {
+      margin-top: 14px;
+    }
+
+    .knockout-stats {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.72);
+      overflow: clip;
+    }
+
+    .knockout-stats-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .knockout-stats-head h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .knockout-stats-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .knockout-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .knockout-map {
+      overflow-x: auto;
+      padding: 10px 8px 14px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .bracket-classic {
+      position: relative;
+      width: 1700px;
+      min-width: 1700px;
+      height: 900px;
+      display: block;
+    }
+
+    .bracket-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .bracket-lines path {
+      fill: none;
+      stroke: #b9cbc3;
+      stroke-width: 2.5;
+      stroke-linecap: butt;
+      stroke-linejoin: round;
+    }
+
+    .bracket-game-node {
+      position: absolute;
+      width: 158px;
+      height: 78px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    .bracket-label {
+      position: absolute;
+      top: 8px;
+      width: 158px;
+      transform: translateX(-50%);
+    }
+
+    .bracket-label,
+    .bracket-final-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      text-align: center;
+    }
+
+    .bracket-game {
+      appearance: none;
+      -webkit-appearance: none;
+      box-sizing: border-box;
+      width: 158px;
+      height: 78px;
+      min-width: 158px;
+      max-width: 158px;
+      min-height: 78px;
+      max-height: 78px;
+      display: grid;
+      grid-template-rows: repeat(3, 18px);
+      align-content: center;
+      gap: 4px;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      text-align: left;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      font: inherit;
+      color: inherit;
+    }
+
+    .bracket-game.active {
+      border-color: var(--green);
+      background: #f2faf6;
+      box-shadow: 0 8px 22px rgba(15, 123, 89, .10);
+    }
+
+    .bracket-game.placeholder {
+      place-items: center;
+      border-style: dashed;
+      background: #f7faf8;
+      color: #a1afa8;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .bracket-game-node.filtered-out {
+      opacity: .45;
+    }
+
+    .bracket-team {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+      width: 100%;
+      max-width: 100%;
+      height: 18px;
+      line-height: 18px;
+      font-size: 13px;
+      font-weight: 850;
+      overflow: hidden;
+    }
+
+    .bracket-team span:first-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bracket-score {
+      color: var(--green);
+      font-weight: 950;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .knockout-detail {
+      display: none;
+    }
+
+    .knockout-form {
+      display: grid;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .knockout-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .knockout-teams {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .knockout-score {
+      display: inline-grid;
+      grid-template-columns: 38px auto 38px;
+      gap: 4px;
+      align-items: center;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .knockout-score input {
+      width: 38px;
+      height: 36px;
+      min-height: 36px;
+      padding: 0;
+      font-weight: 900;
+      text-align: center;
     }
 
     .match-card {
@@ -921,8 +1169,13 @@
 
     @media (max-width: 920px) {
       .dashboard,
-      .editor {
+      .editor,
+      .knockout-layout {
         grid-template-columns: 1fr;
+      }
+
+      .knockout-detail {
+        position: static;
       }
 
       .topbar {
@@ -970,6 +1223,32 @@
       .date-strip {
         grid-template-columns: 1fr;
         gap: 6px;
+      }
+
+      .stage-switch {
+        width: 100%;
+      }
+
+      .knockout-map {
+        max-width: 100%;
+      }
+
+      .bracket-classic {
+        width: 1700px;
+        min-width: 1700px;
+        height: 900px;
+      }
+
+      .bracket-game {
+        padding: 8px;
+      }
+
+      .knockout-teams {
+        grid-template-columns: 1fr;
+      }
+
+      .knockout-score {
+        justify-self: center;
       }
 
       .entry-form {
@@ -1075,6 +1354,12 @@
       </div>
     </header>
 
+    <nav class="stage-switch" aria-label="Tournament stage">
+      <button class="stage-tab active" type="button" data-stage="group">Group Stage</button>
+      <button class="stage-tab" type="button" data-stage="knockout">Knockout</button>
+    </nav>
+
+    <section id="groupStageView">
     <section class="date-strip" aria-label="Matchday filter">
       <div class="date-label">Matchday</div>
       <div class="date-scroll" id="dateFilter"><button class="date-chip" type="button" data-date="all" title="Show All matches"><b>All</b><span>72 games</span></button><button class="date-chip" type="button" data-date="2026-06-11" title="Show Thu, Jun 11 matches"><b>Thu, Jun 11</b><span>2 games</span></button><button class="date-chip" type="button" data-date="2026-06-12" title="Show Fri, Jun 12 matches"><b>Fri, Jun 12</b><span>2 games</span></button><button class="date-chip" type="button" data-date="2026-06-13" title="Show Sat, Jun 13 matches"><b>Sat, Jun 13</b><span>4 games</span></button><button class="date-chip active" type="button" data-date="2026-06-14" title="Show Sun, Jun 14 matches"><b>Sun, Jun 14</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-15" title="Show Mon, Jun 15 matches"><b>Mon, Jun 15</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-16" title="Show Tue, Jun 16 matches"><b>Tue, Jun 16</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-17" title="Show Wed, Jun 17 matches"><b>Wed, Jun 17</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-18" title="Show Thu, Jun 18 matches"><b>Thu, Jun 18</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-19" title="Show Fri, Jun 19 matches"><b>Fri, Jun 19</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-20" title="Show Sat, Jun 20 matches"><b>Sat, Jun 20</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-21" title="Show Sun, Jun 21 matches"><b>Sun, Jun 21</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-22" title="Show Mon, Jun 22 matches"><b>Mon, Jun 22</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-23" title="Show Tue, Jun 23 matches"><b>Tue, Jun 23</b><span>4 games</span></button><button class="date-chip" type="button" data-date="2026-06-24" title="Show Wed, Jun 24 matches"><b>Wed, Jun 24</b><span>6 games</span></button><button class="date-chip" type="button" data-date="2026-06-25" title="Show Thu, Jun 25 matches"><b>Thu, Jun 25</b><span>6 games</span></button><button class="date-chip" type="button" data-date="2026-06-26" title="Show Fri, Jun 26 matches"><b>Fri, Jun 26</b><span>6 games</span></button><button class="date-chip" type="button" data-date="2026-06-27" title="Show Sat, Jun 27 matches"><b>Sat, Jun 27</b><span>6 games</span></button></div>
@@ -1584,6 +1869,30 @@
         </div>
       </aside>
     </div>
+    </section>
+
+    <section class="band hidden" id="knockoutStageView">
+      <div class="section-head">
+        <h2>Knockout Predictions</h2>
+        <div class="section-tools">
+          <select id="knockoutFriendFocus" title="Show knockout predictions by friend"><option value="all">All friends</option></select>
+        </div>
+      </div>
+      <div class="panel-body">
+        <section class="date-strip knockout-date-strip" aria-label="Knockout date filter">
+          <div class="date-label">Knockout</div>
+          <div class="date-scroll" id="knockoutDateFilter"></div>
+        </section>
+        <div class="knockout-layout">
+          <div class="scroll-window">
+            <div class="knockout-map" id="knockoutMap" aria-label="Knockout bracket"></div>
+          </div>
+          <aside class="knockout-detail" id="knockoutDetail"></aside>
+        </div>
+        <section class="knockout-stats" id="knockoutStats" aria-label="Knockout statistics"></section>
+        <div class="match-list knockout-match-list" id="knockoutMatchList"></div>
+      </div>
+    </section>
   </main>
 
   <div class="entry-gate hidden" id="entryGate">
@@ -1606,6 +1915,66 @@
     const LA_UTC_OFFSET = "-07:00";
     const HOSTED_API_ORIGIN = "https://world-cup-prediction-tracker.onrender.com";
     const PARTICIPANTS = ["WBY", "LPR", "SYZ", "CZY", "ZHY", "LJZ", "LHN", "CWT"];
+    const KNOCKOUT_ROUNDS = [
+      { id: "r32", name: "Round of 32", count: 16 },
+      { id: "r16", name: "Round of 16", count: 8 },
+      { id: "qf", name: "Quarterfinals", count: 4 },
+      { id: "sf", name: "Semifinals", count: 2 },
+      { id: "third", name: "Third Place", count: 1 },
+      { id: "final", name: "Final", count: 1 }
+    ];
+    const ROUND_OF_32_MATCHUPS = [
+      { home: "Germany", away: "Paraguay", date: "2026-06-29", time: "13:30", city: "Foxborough" },
+      { home: "France", away: "Sweden", date: "2026-06-30", time: "14:00", city: "New York/New Jersey" },
+      { home: "South Africa", away: "Canada", date: "2026-06-28", time: "12:00", city: "Los Angeles" },
+      { home: "Netherlands", away: "Morocco", date: "2026-06-29", time: "18:00", city: "Monterrey" },
+      { home: "Portugal", away: "Croatia", date: "2026-07-02", time: "16:00", city: "Toronto" },
+      { home: "Spain", away: "Austria", date: "2026-07-02", time: "12:00", city: "Los Angeles" },
+      { home: "United States", away: "Bosnia and Herzegovina", date: "2026-07-01", time: "17:00", city: "San Francisco Bay Area" },
+      { home: "Belgium", away: "Senegal", date: "2026-07-01", time: "13:00", city: "Seattle" },
+      { home: "Brazil", away: "Japan", date: "2026-06-29", time: "10:00", city: "Houston" },
+      { home: "Ivory Coast", away: "Norway", date: "2026-06-30", time: "10:00", city: "Dallas" },
+      { home: "Mexico", away: "Ecuador", date: "2026-06-30", time: "17:00", city: "Mexico City" },
+      { home: "England", away: "DR Congo", date: "2026-07-01", time: "09:00", city: "Atlanta" },
+      { home: "Argentina", away: "Cape Verde", date: "2026-07-03", time: "15:00", city: "Miami" },
+      { home: "Australia", away: "Egypt", date: "2026-07-03", time: "11:00", city: "Dallas" },
+      { home: "Switzerland", away: "Algeria", date: "2026-07-02", time: "20:00", city: "Vancouver" },
+      { home: "Colombia", away: "Ghana", date: "2026-07-03", time: "18:30", city: "Kansas City" }
+    ];
+    const KNOCKOUT_STARTER_MATCHES = KNOCKOUT_ROUNDS.flatMap(round =>
+      Array.from({ length: round.count }, (_, index) => ({
+        id: `k${String(KNOCKOUT_ROUNDS.slice(0, KNOCKOUT_ROUNDS.indexOf(round)).reduce((total, item) => total + item.count, 0) + index + 1).padStart(2, "0")}`,
+        round: round.id,
+        roundName: round.name,
+        slot: index + 1,
+        home: round.id === "r32" ? ROUND_OF_32_MATCHUPS[index].home : `${round.name} ${index + 1} A`,
+        away: round.id === "r32" ? ROUND_OF_32_MATCHUPS[index].away : `${round.name} ${index + 1} B`,
+        date: round.id === "r32" ? ROUND_OF_32_MATCHUPS[index].date : "",
+        time: round.id === "r32" ? ROUND_OF_32_MATCHUPS[index].time : "",
+        city: round.id === "r32" ? ROUND_OF_32_MATCHUPS[index].city : "",
+        actualHome: "",
+        actualAway: ""
+      }))
+    );
+    const KNOCKOUT_SCHEDULE_BY_ID = {
+      k17: { date: "2026-07-04", time: "14:00", city: "Philadelphia" },
+      k18: { date: "2026-07-04", time: "10:00", city: "Houston" },
+      k19: { date: "2026-07-06", time: "12:00", city: "Dallas" },
+      k20: { date: "2026-07-06", time: "17:00", city: "Seattle" },
+      k21: { date: "2026-07-05", time: "13:00", city: "New York/New Jersey" },
+      k22: { date: "2026-07-05", time: "17:00", city: "Mexico City" },
+      k23: { date: "2026-07-07", time: "09:00", city: "Atlanta" },
+      k24: { date: "2026-07-07", time: "13:00", city: "Vancouver" },
+      k25: { date: "2026-07-09", time: "13:00", city: "Foxborough" },
+      k26: { date: "2026-07-10", time: "12:00", city: "Los Angeles" },
+      k27: { date: "2026-07-11", time: "14:00", city: "Miami" },
+      k28: { date: "2026-07-11", time: "18:00", city: "Kansas City" },
+      k29: { date: "2026-07-14", time: "12:00", city: "Dallas" },
+      k30: { date: "2026-07-15", time: "12:00", city: "Atlanta" },
+      k31: { date: "2026-07-18", time: "14:00", city: "Miami" },
+      k32: { date: "2026-07-19", time: "12:00", city: "New York/New Jersey" }
+    };
+    KNOCKOUT_STARTER_MATCHES.forEach(match => Object.assign(match, KNOCKOUT_SCHEDULE_BY_ID[match.id] || {}));
     const PLAYER_PHOTOS = {
       syz: "assets/player-syz.jpeg"
     };
@@ -2228,6 +2597,8 @@
         "m51:lpr": { home: 4, away: 0 },
         "m57:lpr": { home: 2, away: 1 }
       },
+      knockoutMatches: structuredClone(KNOCKOUT_STARTER_MATCHES),
+      knockoutPredictions: {},
       bonusQuestions: [],
       bonusAnswers: {
         "france-senegal-mbappe-goals:wby": "2"
@@ -2236,6 +2607,10 @@
 
     let data = loadData();
     let activeTab = "leaderboard";
+    let activeKnockoutTab = "leaderboard";
+    let activeStage = localStorage.getItem(`${STORAGE_KEY}-stage`) || "group";
+    let activeKnockoutMatch = "";
+    let activeKnockoutDate = "all";
     let activeDate = "all";
     let currentParticipant = localStorage.getItem(`${STORAGE_KEY}-participant`) || "wby";
     let apiAvailable = false;
@@ -2259,11 +2634,17 @@
       return names === "Leo|Maya|Me";
     }
 
+    function isKnockoutPlaceholder(value) {
+      return /^Round of 32 \d+ [AB]$/.test(String(value || ""));
+    }
+
     function withStarterData(saved) {
       const upgraded = {
         friends: hasOnlyDemoFriends(saved.friends) ? structuredClone(starter.friends) : saved.friends,
         matches: saved.matches,
         predictions: saved.predictions && typeof saved.predictions === "object" ? saved.predictions : {},
+        knockoutMatches: Array.isArray(saved.knockoutMatches) ? saved.knockoutMatches : structuredClone(KNOCKOUT_STARTER_MATCHES),
+        knockoutPredictions: saved.knockoutPredictions && typeof saved.knockoutPredictions === "object" ? saved.knockoutPredictions : {},
         bonusQuestions: Array.isArray(saved.bonusQuestions) ? saved.bonusQuestions : [],
         bonusAnswers: saved.bonusAnswers && typeof saved.bonusAnswers === "object" ? saved.bonusAnswers : {}
       };
@@ -2271,6 +2652,19 @@
       starter.matches.forEach(match => {
         if (seen.has(fixtureSignature(match))) return;
         upgraded.matches.push(structuredClone(match));
+      });
+      const knockoutIds = new Set(upgraded.knockoutMatches.map(match => match.id));
+      KNOCKOUT_STARTER_MATCHES.forEach(match => {
+        const existing = upgraded.knockoutMatches.find(item => item.id === match.id);
+        if (existing) {
+          if (match.round === "r32" && isKnockoutPlaceholder(existing.home)) existing.home = match.home;
+          if (match.round === "r32" && isKnockoutPlaceholder(existing.away)) existing.away = match.away;
+          ["date", "time", "city"].forEach(field => {
+            if (match[field] && !existing[field]) existing[field] = match[field];
+          });
+          return;
+        }
+        upgraded.knockoutMatches.push(structuredClone(match));
       });
       upgraded.matches.forEach(match => {
         const signature = fixtureSignature(match);
@@ -2376,6 +2770,11 @@
       return data.bonusQuestions.filter(question => question.matchId === match.id);
     }
 
+    function matchForBonus(question) {
+      return data.matches.find(match => match.id === question?.matchId) ||
+        data.knockoutMatches?.find(match => match.id === question?.matchId);
+    }
+
     function bonusKey(questionId, friendId) {
       return `${questionId}:${friendId}`;
     }
@@ -2452,6 +2851,30 @@
         const online = merged.predictions[key];
         if (!online || online.home === "" || online.away === "") {
           merged.predictions[key] = structuredClone(prediction);
+        }
+      });
+
+      merged.knockoutMatches = Array.isArray(merged.knockoutMatches) ? merged.knockoutMatches : [];
+      const knockoutById = new Map(merged.knockoutMatches.map(match => [match.id, match]));
+      (local.knockoutMatches || []).forEach(match => {
+        const online = knockoutById.get(match.id);
+        if (!online) {
+          merged.knockoutMatches.push(structuredClone(match));
+          return;
+        }
+        ["home", "away", "actualHome", "actualAway"].forEach(field => {
+          if ((online[field] === "" || online[field] === undefined || online[field] === null) &&
+              match[field] !== "" && match[field] !== undefined && match[field] !== null) {
+            online[field] = match[field];
+          }
+        });
+      });
+
+      merged.knockoutPredictions = merged.knockoutPredictions && typeof merged.knockoutPredictions === "object" ? merged.knockoutPredictions : {};
+      Object.entries(local.knockoutPredictions || {}).forEach(([key, prediction]) => {
+        const online = merged.knockoutPredictions[key];
+        if (!online || online.home === "" || online.away === "") {
+          merged.knockoutPredictions[key] = structuredClone(prediction);
         }
       });
 
@@ -2614,6 +3037,9 @@
           const pa = Number(prediction.away);
           decided += 1;
           points += score;
+          bonusQuestionsForMatch(match).forEach(question => {
+            points += bonusScore(question, friend.id);
+          });
           totalError += Math.abs(ah - ph) + Math.abs(aa - pa);
           if (ah === ph && aa === pa) exact += 1;
           if (resultType(ah, aa) === resultType(ph, pa)) resultHits += 1;
@@ -2636,13 +3062,64 @@
       }).sort((a, b) => b.points - a.points || b.exact - a.exact || a.avgError - b.avgError || a.index - b.index);
     }
 
+    function knockoutStats() {
+      const matches = data.knockoutMatches || [];
+      return data.friends.map((friend, index) => {
+        let points = 0;
+        let exact = 0;
+        let decided = 0;
+        let resultHits = 0;
+        let totalError = 0;
+        let entered = 0;
+
+        matches.forEach(match => {
+          const prediction = data.knockoutPredictions?.[knockoutPredictionKey(match.id, friend.id)];
+          if (prediction && prediction.home !== "" && prediction.away !== "") entered += 1;
+          const score = predictionScore(match, prediction);
+          if (score === null) return;
+          const ah = Number(match.actualHome);
+          const aa = Number(match.actualAway);
+          const ph = Number(prediction.home);
+          const pa = Number(prediction.away);
+          decided += 1;
+          points += score;
+          totalError += Math.abs(ah - ph) + Math.abs(aa - pa);
+          if (ah === ph && aa === pa) exact += 1;
+          if (resultType(ah, aa) === resultType(ph, pa)) resultHits += 1;
+        });
+
+        return {
+          ...friend,
+          points,
+          exact,
+          decided,
+          entered,
+          resultHits,
+          index,
+          accuracy: decided ? Math.round((resultHits / decided) * 100) : 0,
+          avgError: decided ? totalError / decided : 0
+        };
+      }).sort((a, b) => b.points - a.points || b.exact - a.exact || a.avgError - b.avgError || a.index - b.index);
+    }
+
     function render() {
       renderIdentity();
       renderLeaderSpotlight();
+      renderStage();
       renderDateFilter();
       renderFilters();
       renderMatches();
+      renderKnockoutDateFilter();
+      renderKnockoutStage();
+      renderKnockoutStats();
       renderSidePanel();
+    }
+
+    function renderStage() {
+      if (!["group", "knockout"].includes(activeStage)) activeStage = "group";
+      document.querySelectorAll(".stage-tab").forEach(button => button.classList.toggle("active", button.dataset.stage === activeStage));
+      document.querySelector("#groupStageView").classList.toggle("hidden", activeStage !== "group");
+      document.querySelector("#knockoutStageView").classList.toggle("hidden", activeStage !== "knockout");
     }
 
     function renderLeaderSpotlight() {
@@ -2709,6 +3186,23 @@
       return `<button class="date-chip${isActive}" type="button" data-date="${escapeHtml(value)}" title="Show ${escapeHtml(label)} matches"><b>${escapeHtml(label)}</b><span>${escapeHtml(meta)}</span></button>`;
     }
 
+    function renderKnockoutDateFilter() {
+      const dateFilter = document.querySelector("#knockoutDateFilter");
+      if (!dateFilter) return;
+      const dates = [...new Set((data.knockoutMatches || []).map(match => match.date).filter(Boolean))].sort();
+      if (activeKnockoutDate !== "all" && !dates.includes(activeKnockoutDate)) activeKnockoutDate = "all";
+      const allButton = knockoutDateChipMarkup("all", "All", `${(data.knockoutMatches || []).length} games`);
+      dateFilter.innerHTML = allButton + dates.map(date => {
+        const count = (data.knockoutMatches || []).filter(match => match.date === date).length;
+        return knockoutDateChipMarkup(date, formatDateShort(date), `${count} games`);
+      }).join("");
+    }
+
+    function knockoutDateChipMarkup(value, label, meta) {
+      const isActive = value === activeKnockoutDate ? " active" : "";
+      return `<button class="date-chip${isActive}" type="button" data-knockout-date="${escapeHtml(value)}" title="Show ${escapeHtml(label)} knockout matches"><b>${escapeHtml(label)}</b><span>${escapeHtml(meta)}</span></button>`;
+    }
+
     function renderFilters() {
       if (!data.friends.some(friend => friend.id === currentParticipant)) currentParticipant = data.friends[0]?.id || "";
 
@@ -2722,6 +3216,13 @@
       const currentFriend = friendFocus.value || "all";
       friendFocus.innerHTML = `<option value="all">All friends</option>` + data.friends.map(friend => `<option value="${friend.id}">${escapeHtml(friend.name)}</option>`).join("");
       friendFocus.value = data.friends.some(friend => friend.id === currentFriend) ? currentFriend : "all";
+
+      const knockoutFocus = document.querySelector("#knockoutFriendFocus");
+      if (knockoutFocus) {
+        const currentKnockoutFriend = knockoutFocus.value || "all";
+        knockoutFocus.innerHTML = `<option value="all">All friends</option>` + data.friends.map(friend => `<option value="${friend.id}">${escapeHtml(friend.name)}</option>`).join("");
+        knockoutFocus.value = data.friends.some(friend => friend.id === currentKnockoutFriend) ? currentKnockoutFriend : "all";
+      }
     }
 
     function renderMatches() {
@@ -2805,6 +3306,451 @@
       `;
     }
 
+    function knockoutPredictionKey(matchId, friendId) {
+      return `${matchId}:${friendId}`;
+    }
+
+    function renderKnockoutStage() {
+      if (!data.knockoutMatches?.length) data.knockoutMatches = structuredClone(KNOCKOUT_STARTER_MATCHES);
+      const visibleMatches = data.knockoutMatches.filter(match => activeKnockoutDate === "all" || match.date === activeKnockoutDate);
+      if (!activeKnockoutMatch || !visibleMatches.some(match => match.id === activeKnockoutMatch)) {
+        activeKnockoutMatch = visibleMatches[0]?.id || "";
+      }
+      const map = document.querySelector("#knockoutMap");
+      const detail = document.querySelector("#knockoutDetail");
+      const list = document.querySelector("#knockoutMatchList");
+      if (!map) return;
+
+      map.innerHTML = knockoutClassicMapMarkup(visibleMatches);
+
+      if (!visibleMatches.length) {
+        map.innerHTML = `<div class="empty">No knockout games in this date.</div>`;
+        if (detail) detail.innerHTML = "";
+        if (list) list.innerHTML = "";
+        return;
+      }
+      const match = visibleMatches.find(item => item.id === activeKnockoutMatch);
+      if (!match) {
+        if (detail) detail.innerHTML = "";
+        if (list) list.innerHTML = "";
+        return;
+      }
+      if (detail) detail.innerHTML = "";
+      if (list) {
+        list.innerHTML = activeKnockoutDate === "all" ? "" : visibleMatches
+          .slice()
+          .sort((a, b) => kickoffAt(a) - kickoffAt(b) || (a.slot || 0) - (b.slot || 0))
+          .map(match => knockoutMatchCardMarkup(match))
+          .join("");
+      }
+    }
+
+    function renderKnockoutStats() {
+      const view = document.querySelector("#knockoutStats");
+      if (!view) return;
+      const previousTableViewport = view.querySelector(".table-wrap");
+      const previousChartViewport = view.querySelector(".points-chart-scroll");
+      const previousScrollLeft = previousTableViewport ? previousTableViewport.scrollLeft : 0;
+      const previousScrollTop = previousTableViewport ? previousTableViewport.scrollTop : 0;
+      const previousChartScrollLeft = previousChartViewport ? previousChartViewport.scrollLeft : 0;
+      const rows = knockoutStats();
+      const completed = (data.knockoutMatches || []).filter(hasActual).length;
+      const total = (data.knockoutMatches || []).length;
+      view.innerHTML = `
+        <div class="section-head">
+          <h2>Table</h2>
+          <div class="section-tools">
+            <div class="tabs" role="tablist" aria-label="Knockout view">
+              <button class="tab active" data-knockout-tab="leaderboard" type="button">Rank</button>
+              <button class="tab" data-knockout-tab="accuracy" type="button">Stats</button>
+              <button class="tab" data-knockout-tab="graph" type="button">Graph</button>
+            </div>
+            <div class="score-rule-bar" aria-label="Knockout point-counting rule">
+              <b>Score</b>
+              <span>Exact 5</span>
+              <span>Result +2</span>
+              <span>GD +1</span>
+              <span>Home +1</span>
+              <span>Away +1</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="knockoutLeaderboardView">
+            ${knockoutLeaderboardMarkup(rows, total)}
+          </div>
+          <div id="knockoutAccuracyView" class="hidden">
+            ${knockoutAccuracyMarkup(rows, total)}
+          </div>
+          <section class="points-chart hidden" id="knockoutPointsChart" aria-label="Cumulative knockout points after each completed match">
+            ${knockoutPointsChartMarkup()}
+          </section>
+        </div>
+      `;
+      view.querySelectorAll("[data-knockout-tab]").forEach(tab => tab.classList.toggle("active", tab.dataset.knockoutTab === activeKnockoutTab));
+      view.querySelector("#knockoutLeaderboardView").classList.toggle("hidden", activeKnockoutTab !== "leaderboard");
+      view.querySelector("#knockoutAccuracyView").classList.toggle("hidden", activeKnockoutTab !== "accuracy");
+      view.querySelector("#knockoutPointsChart").classList.toggle("hidden", activeKnockoutTab !== "graph");
+      const nextTableViewport = view.querySelector(".table-wrap");
+      if (nextTableViewport) {
+        nextTableViewport.scrollLeft = previousScrollLeft;
+        nextTableViewport.scrollTop = previousScrollTop;
+      }
+      const nextChartViewport = view.querySelector(".points-chart-scroll");
+      if (nextChartViewport) {
+        nextChartViewport.scrollLeft = previousChartScrollLeft;
+      }
+    }
+
+    function knockoutLeaderboardMarkup(rows, total) {
+      const max = Math.max(...rows.map(row => row.points), 1);
+      return rows.length ? `
+        <div class="leaderboard">
+          ${rows.map((row, index) => `
+            <div class="leader-row">
+              <div class="rank">${index + 1}</div>
+              <div class="leader-main">
+                <div class="leader-name"><span>${escapeHtml(row.name)}</span><span>${row.points} pts</span></div>
+                <div class="bar"><i style="width:${Math.max(4, (row.points / max) * 100)}%"></i></div>
+                <div class="leader-meta">${row.exact} exact · ${row.accuracy}% result · ${row.entered}/${total} entered</div>
+              </div>
+              <div class="score-badge">${row.exact}</div>
+            </div>
+          `).join("")}
+        </div>
+      ` : `<div class="empty">Add knockout predictions to start the table.</div>`;
+    }
+
+    function knockoutAccuracyMarkup(rows, total) {
+      return `
+        <div class="scroll-window">
+          <div class="table-wrap" data-scroll-viewport tabindex="0" aria-label="Scrollable knockout statistics table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Friend</th>
+                  <th>Points</th>
+                  <th>Exact</th>
+                  <th>Result hit</th>
+                  <th>Avg miss</th>
+                  <th>Predictions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rows.map(row => `
+                  <tr>
+                    <td><b>${escapeHtml(row.name)}</b></td>
+                    <td>${row.points}</td>
+                    <td>${row.exact}</td>
+                    <td>${row.accuracy}%</td>
+                    <td>${row.decided ? row.avgError.toFixed(1) : "-"}</td>
+                    <td>${row.entered}/${total}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function knockoutPointsHistory() {
+      const matches = (data.knockoutMatches || [])
+        .filter(hasActual)
+        .sort((a, b) => kickoffAt(a) - kickoffAt(b) || (a.slot || 0) - (b.slot || 0));
+      const totals = Object.fromEntries(data.friends.map(friend => [friend.id, 0]));
+      const series = Object.fromEntries(data.friends.map(friend => [friend.id, [0]]));
+
+      matches.forEach(match => {
+        data.friends.forEach(friend => {
+          const score = predictionScore(match, data.knockoutPredictions?.[knockoutPredictionKey(match.id, friend.id)]);
+          totals[friend.id] += score === null ? 0 : score;
+          bonusQuestionsForMatch(match).forEach(question => {
+            totals[friend.id] += bonusScore(question, friend.id);
+          });
+          series[friend.id].push(totals[friend.id]);
+        });
+      });
+
+      return { matches, series };
+    }
+
+    function knockoutPointsChartMarkup() {
+      const { matches, series } = knockoutPointsHistory();
+      if (!matches.length) {
+        return `<h3>Points by match</h3><p class="points-chart-subtitle">Final knockout results only</p><div class="empty">No completed knockout matches yet.</div>`;
+      }
+
+      const colors = ["#0f7b59", "#c88b22", "#2f6fc1", "#d95c43", "#00838f", "#7b5bb5", "#66756e", "#d14f86"];
+      const matchSpacing = 56;
+      const width = Math.max(680, 48 + matches.length * matchSpacing);
+      const height = 405;
+      const margin = { top: 18, right: 12, bottom: 42, left: 18 };
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+      const values = data.friends.flatMap(friend => series[friend.id]);
+      const maxPoints = Math.max(5, Math.ceil(Math.max(...values, 0) / 5) * 5);
+      const pointCount = matches.length + 1;
+      const x = index => margin.left + (index / Math.max(pointCount - 1, 1)) * plotWidth;
+      const y = value => margin.top + plotHeight - (value / maxPoints) * plotHeight;
+      const yTicks = 5;
+
+      const grid = Array.from({ length: yTicks + 1 }, (_, index) => {
+        const value = (maxPoints / yTicks) * index;
+        const py = y(value);
+        return `<line class="chart-grid-line" x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}"></line>
+          <text class="chart-axis-label" x="${margin.left - 3}" y="${py + 3}" text-anchor="end">${formatPoints(value)}</text>`;
+      }).join("");
+
+      const xLabels = matches.map((match, index) => {
+        const position = index + 1;
+        return `<text class="chart-axis-label" x="${x(position)}" y="${height - 16}" text-anchor="middle">K${position}</text>`;
+      }).join("");
+
+      const lines = data.friends.map((friend, friendIndex) => {
+        const points = series[friend.id];
+        const color = colors[friendIndex % colors.length];
+        const polyline = points.map((value, index) => `${x(index)},${y(value)}`).join(" ");
+        const dots = points.slice(1).map((value, index) => {
+          const match = matches[index];
+          const matchLabel = `${match.home} ${match.actualHome}-${match.actualAway} ${match.away}`;
+          return `<circle class="chart-dot" cx="${x(index + 1)}" cy="${y(value)}" r="3" fill="${color}">
+            <title>${escapeHtml(friend.name)} · K${index + 1} · ${escapeHtml(matchLabel)} · ${formatPoints(value)} pts</title>
+          </circle>`;
+        }).join("");
+        return `<polyline class="chart-line" points="${polyline}" stroke="${color}"></polyline>${dots}`;
+      }).join("");
+
+      const legend = data.friends.map((friend, index) => `
+        <div class="chart-legend-item">
+          <i style="background:${colors[index % colors.length]}"></i>
+          <span>${escapeHtml(friend.name)}</span>
+        </div>
+      `).join("");
+
+      return `
+        <h3>Points by match</h3>
+        <p class="points-chart-subtitle">Cumulative knockout points after each final result · K = completed knockout match</p>
+        <div class="scroll-window">
+          <div class="points-chart-scroll" data-scroll-viewport tabindex="0" aria-label="Scrollable knockout match-by-match points graph">
+            <svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="Eight-player knockout cumulative points line graph">
+              ${grid}
+              ${xLabels}
+              ${lines}
+            </svg>
+          </div>
+        </div>
+        <div class="chart-legend">${legend}</div>
+      `;
+    }
+
+    function knockoutClassicMapMarkup(visibleMatches) {
+      const visibleIds = new Set(visibleMatches.map(match => match.id));
+      const allMatches = data.knockoutMatches || [];
+      const byId = Object.fromEntries(allMatches.map(match => [match.id, match]));
+      const filtered = activeKnockoutDate !== "all";
+      const layout = knockoutLayout();
+      const labels = [
+        ["Round of 32", 95], ["Round of 16", 290], ["Quarterfinal", 485], ["Semifinal", 680],
+        ["Final", 850],
+        ["Semifinal", 1020], ["Quarterfinal", 1215], ["Round of 16", 1410], ["Round of 32", 1605]
+      ];
+      return `
+        <div class="bracket-classic">
+          <svg class="bracket-lines" viewBox="0 0 1700 900" aria-hidden="true">
+            ${knockoutConnectorPaths(layout)}
+          </svg>
+          ${labels.map(([label, x]) => `<div class="bracket-label" style="left:${x}px;">${escapeHtml(label)}</div>`).join("")}
+          ${Object.entries(layout).map(([id, point]) => bracketNodeMarkup(byId[id], point, visibleIds, filtered)).join("")}
+        </div>
+      `;
+    }
+
+    function knockoutLayout() {
+      const y8 = [112, 202, 292, 382, 472, 562, 652, 742];
+      const y4 = [157, 337, 517, 697];
+      const y2 = [247, 607];
+      return {
+        k01: { x: 95, y: y8[0] }, k02: { x: 95, y: y8[1] }, k03: { x: 95, y: y8[2] }, k04: { x: 95, y: y8[3] },
+        k05: { x: 95, y: y8[4] }, k06: { x: 95, y: y8[5] }, k07: { x: 95, y: y8[6] }, k08: { x: 95, y: y8[7] },
+        k17: { x: 290, y: y4[0] }, k18: { x: 290, y: y4[1] }, k19: { x: 290, y: y4[2] }, k20: { x: 290, y: y4[3] },
+        k25: { x: 485, y: y2[0] }, k26: { x: 485, y: y2[1] }, k29: { x: 680, y: 427 },
+        k32: { x: 850, y: 427 }, k31: { x: 850, y: 610 },
+        k30: { x: 1020, y: 427 }, k27: { x: 1215, y: y2[0] }, k28: { x: 1215, y: y2[1] },
+        k21: { x: 1410, y: y4[0] }, k22: { x: 1410, y: y4[1] }, k23: { x: 1410, y: y4[2] }, k24: { x: 1410, y: y4[3] },
+        k09: { x: 1605, y: y8[0] }, k10: { x: 1605, y: y8[1] }, k11: { x: 1605, y: y8[2] }, k12: { x: 1605, y: y8[3] },
+        k13: { x: 1605, y: y8[4] }, k14: { x: 1605, y: y8[5] }, k15: { x: 1605, y: y8[6] }, k16: { x: 1605, y: y8[7] }
+      };
+    }
+
+    function knockoutConnectorPaths(layout) {
+      const leftPairs = [["k01", "k02", "k17"], ["k03", "k04", "k18"], ["k05", "k06", "k19"], ["k07", "k08", "k20"], ["k17", "k18", "k25"], ["k19", "k20", "k26"], ["k25", "k26", "k29"], ["k29", "k32", "k32"]];
+      const rightPairs = [["k09", "k10", "k21"], ["k11", "k12", "k22"], ["k13", "k14", "k23"], ["k15", "k16", "k24"], ["k21", "k22", "k27"], ["k23", "k24", "k28"], ["k27", "k28", "k30"], ["k30", "k32", "k32"]];
+      const paths = [];
+      leftPairs.forEach(([a, b, target]) => {
+        if (a === target) return;
+        if (b === target) paths.push(connectorPath(layout[a], layout[target], "left"));
+        else paths.push(pairPath(layout[a], layout[b], layout[target], "left"));
+      });
+      rightPairs.forEach(([a, b, target]) => {
+        if (b === target) paths.push(connectorPath(layout[a], layout[target], "right"));
+        else paths.push(pairPath(layout[a], layout[b], layout[target], "right"));
+      });
+      return paths.join("");
+    }
+
+    function pairPath(top, bottom, target, side) {
+      const edge = side === "left" ? 79 : -79;
+      const x1 = top.x + edge;
+      const x2 = bottom.x + edge;
+      const tx = target.x - edge;
+      const midX = (x1 + tx) / 2;
+      return `<path d="M${x1} ${top.y} H${midX} V${bottom.y} H${x2} M${midX} ${(top.y + bottom.y) / 2} H${tx}"></path>`;
+    }
+
+    function connectorPath(source, target, side) {
+      const edge = side === "left" ? 79 : -79;
+      const sx = source.x + edge;
+      const tx = target.x - edge;
+      return `<path d="M${sx} ${source.y} H${tx}"></path>`;
+    }
+
+    function bracketNodeMarkup(match, point, visibleIds, filtered) {
+      if (!match) return "";
+      const hiddenByFilter = filtered && !visibleIds.has(match.id);
+      return `
+        <div class="bracket-game-node ${hiddenByFilter ? "filtered-out" : ""}" style="left:${point.x}px; top:${point.y}px;">
+          ${hiddenByFilter ? `<div class="bracket-game placeholder"><span>${escapeHtml(match.roundName || "Knockout")}</span></div>` : knockoutGameButton(match)}
+        </div>
+      `;
+    }
+
+    function knockoutGameButton(match) {
+      const active = match.id === activeKnockoutMatch ? " active" : "";
+      return `
+        <button class="bracket-game${active}" type="button" data-action="select-knockout" data-knockout="${match.id}" title="${escapeHtml(match.home)} vs ${escapeHtml(match.away)}">
+          <div class="bracket-team"><span>${escapeHtml(formatKickoff(match))}</span><span></span></div>
+          <div class="bracket-team"><span>${teamLabel(match.home)}</span><span class="bracket-score">${escapeHtml(scoreValue(match.actualHome))}</span></div>
+          <div class="bracket-team"><span>${teamLabel(match.away)}</span><span class="bracket-score">${escapeHtml(scoreValue(match.actualAway))}</span></div>
+        </button>
+      `;
+    }
+
+    function knockoutDetailMarkup(match) {
+      const focus = document.querySelector("#knockoutFriendFocus")?.value || "all";
+      const allFriends = data.friends.filter(friend => focus === "all" || friend.id === focus);
+      const expanded = expandedMatches.has(match.id) || focus !== "all";
+      const currentFriend = data.friends.find(friend => friend.id === currentParticipant);
+      const friends = expanded ? allFriends : allFriends.filter(friend => friend.id === currentParticipant);
+      const hiddenCount = Math.max(allFriends.length - friends.length, 0);
+      const wbyOnly = currentParticipant !== "wby";
+      const windowState = predictionWindow(match);
+      const scoreLocked = finalScoreLocked(match);
+      const actualLocked = scoreLocked || currentParticipant !== "wby";
+      const actualTitle = finalScoreTitle(match);
+      const questions = bonusQuestionsForMatch(match);
+      return `
+        <div class="knockout-form">
+          <div class="knockout-title">
+            <span>${escapeHtml(match.roundName || "Knockout")} · Game ${escapeHtml(match.slot || "")}</span>
+            <span>${escapeHtml(match.id.toUpperCase())}</span>
+          </div>
+          <div class="match-meta">
+            <span class="pill">${escapeHtml(formatKickoff(match))}</span>
+            ${match.city ? `<span class="pill">${escapeHtml(match.city)}</span>` : ""}
+            <span class="pill ${windowState.state}">${escapeHtml(windowState.label)}</span>
+          </div>
+          <div class="knockout-teams">
+            <input value="${escapeHtml(match.home)}" data-action="knockout-home-team" data-knockout="${match.id}" title="Team name" ${wbyOnly ? "disabled" : ""}>
+            <span class="knockout-score">
+              <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualHome ?? ""))}" data-action="knockout-actual-home" data-knockout="${match.id}" title="${escapeHtml(actualTitle)}" placeholder="-" ${actualLocked ? "disabled" : ""}>
+              <b>-</b>
+              <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualAway ?? ""))}" data-action="knockout-actual-away" data-knockout="${match.id}" title="${escapeHtml(actualTitle)}" placeholder="-" ${actualLocked ? "disabled" : ""}>
+            </span>
+            <input value="${escapeHtml(match.away)}" data-action="knockout-away-team" data-knockout="${match.id}" title="Team name" ${wbyOnly ? "disabled" : ""}>
+          </div>
+          <div class="prediction-header">
+            <span>${expanded ? "All knockout predictions" : `${escapeHtml(currentFriend?.name || "Your")} knockout prediction`}</span>
+            ${focus === "all" ? `<button class="text-button" type="button" data-action="toggle-predictions" data-match="${match.id}">${expanded ? "Hide others" : `Show others (${hiddenCount})`}</button>` : ""}
+          </div>
+          ${friends.map(friend => knockoutPredictionMarkup(match, friend)).join("")}
+          ${questions.map(question => bonusMarkup(match, question, friends)).join("")}
+        </div>
+      `;
+    }
+
+    function knockoutPredictionMarkup(match, friend) {
+      const key = knockoutPredictionKey(match.id, friend.id);
+      const prediction = data.knockoutPredictions[key] || { home: "", away: "" };
+      const points = predictionScore(match, prediction);
+      const windowState = predictionWindow(match);
+      const locked = windowState.state !== "open" || friend.id !== currentParticipant;
+      const title = friend.id === currentParticipant ? windowState.label : `Choose ${friend.name} above to edit this row`;
+      return `
+        <div class="prediction-row ${locked ? "locked" : ""}">
+          <div class="friend-name" title="${escapeHtml(friend.name)}">${escapeHtml(friend.name)}</div>
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(prediction.home ?? ""))}" data-action="knockout-prediction-home" data-knockout="${match.id}" data-friend="${friend.id}" title="${escapeHtml(title)}" ${locked ? "disabled" : ""}>
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(prediction.away ?? ""))}" data-action="knockout-prediction-away" data-knockout="${match.id}" data-friend="${friend.id}" title="${escapeHtml(title)}" ${locked ? "disabled" : ""}>
+          <div class="points">${points === null ? "-" : `${points} pts`}</div>
+        </div>
+      `;
+    }
+
+    function knockoutMatchCardMarkup(match) {
+      const focus = document.querySelector("#knockoutFriendFocus")?.value || "all";
+      const allFriends = data.friends.filter(friend => focus === "all" || friend.id === focus);
+      const expanded = expandedMatches.has(match.id) || focus !== "all";
+      const currentFriend = data.friends.find(friend => friend.id === currentParticipant);
+      const friends = expanded ? allFriends : allFriends.filter(friend => friend.id === currentParticipant);
+      const hiddenCount = Math.max(allFriends.length - friends.length, 0);
+      const windowState = predictionWindow(match);
+      const scoreLocked = finalScoreLocked(match);
+      const actualLocked = scoreLocked || currentParticipant !== "wby";
+      const actualTitle = finalScoreTitle(match);
+      const questions = bonusQuestionsForMatch(match);
+      return `
+        <article class="match-card" id="card-${escapeHtml(match.id)}">
+          <div class="match-summary">
+            <div>
+              <div class="fixture">
+                <div class="team" title="${escapeHtml(match.home)}">${teamLabel(match.home)}</div>
+                <div class="versus" data-knockout-score-label="${match.id}">
+                  <span class="score-editor ${actualLocked ? "locked" : ""}">
+                    <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualHome ?? ""))}" data-action="knockout-actual-home" data-knockout="${match.id}" title="${escapeHtml(actualTitle)}" placeholder="-" ${actualLocked ? "disabled" : ""}>
+                    <b>-</b>
+                    <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.actualAway ?? ""))}" data-action="knockout-actual-away" data-knockout="${match.id}" title="${escapeHtml(actualTitle)}" placeholder="-" ${actualLocked ? "disabled" : ""}>
+                  </span>
+                </div>
+                <div class="team" title="${escapeHtml(match.away)}">${teamLabel(match.away)}</div>
+              </div>
+              <div class="match-meta">
+                <span class="pill">${escapeHtml(formatKickoff(match))}</span>
+                <span class="pill">${escapeHtml(match.roundName || "Knockout")}</span>
+                ${match.city ? `<span class="pill">${escapeHtml(match.city)}</span>` : ""}
+                <span class="pill ${windowState.state}">${escapeHtml(windowState.label)}</span>
+              </div>
+            </div>
+          </div>
+          <div class="predictions">
+            ${focus === "all" ? `
+              <div class="prediction-header">
+                <span>${expanded ? "All predictions" : `${escapeHtml(currentFriend?.name || "Your")} prediction`}</span>
+                <button class="text-button" type="button" data-action="toggle-predictions" data-match="${match.id}">
+                  ${expanded ? "Hide others" : `Show others (${hiddenCount})`}
+                </button>
+              </div>
+            ` : ""}
+            ${friends.map(friend => knockoutPredictionMarkup(match, friend)).join("")}
+            ${questions.map(question => bonusMarkup(match, question, friends)).join("")}
+          </div>
+        </article>
+      `;
+    }
+
+    function scoreValue(value) {
+      return value === "" || value === undefined || value === null ? "-" : String(value);
+    }
+
     function bonusMarkup(match, question, friends) {
       const isAnswerLocked = bonusAnswerLocked(match) || predictionWindow(match).state !== "open";
       const correctDisabled = currentParticipant !== "wby" || new Date() < kickoffAt(match) || bonusCorrectLocked(match);
@@ -2850,7 +3796,7 @@
     }
 
     function renderSidePanel() {
-      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === activeTab));
+      document.querySelectorAll("[data-tab]").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === activeTab));
       document.querySelector("#leaderboardView").classList.toggle("hidden", activeTab !== "leaderboard");
       document.querySelector("#accuracyView").classList.toggle("hidden", activeTab !== "accuracy");
       document.querySelector("#pointsChart").classList.toggle("hidden", activeTab !== "graph");
@@ -2976,6 +3922,17 @@
         const points = predictionScore(match, data.predictions[predictionKey(match.id, friend.id)]);
         const pointLabel = document.querySelector(`[data-score-point="${CSS.escape(match.id + ":" + friend.id)}"]`);
         if (pointLabel) pointLabel.textContent = points === null ? "-" : `${points} pts`;
+      });
+    }
+
+    function refreshKnockoutScores(matchId) {
+      const match = data.knockoutMatches?.find(item => item.id === matchId);
+      if (!match) return;
+      document.querySelectorAll(`[data-knockout-score-label="${CSS.escape(matchId)}"]`).forEach(label => {
+        const homeInput = label.querySelector('[data-action="knockout-actual-home"]');
+        const awayInput = label.querySelector('[data-action="knockout-actual-away"]');
+        if (homeInput) homeInput.value = match.actualHome ?? "";
+        if (awayInput) awayInput.value = match.actualAway ?? "";
       });
     }
 
@@ -3147,12 +4104,37 @@
     function handleDataEdit(target) {
       const action = target.dataset.action;
       if (!action) return false;
-      const match = data.matches.find(item => item.id === target.dataset.match);
+      const knockoutMatch = data.knockoutMatches?.find(item => item.id === target.dataset.knockout);
+      if (action.startsWith("knockout-")) {
+        if (!knockoutMatch) return false;
+        if (action === "knockout-home-team" || action === "knockout-away-team" ||
+            action === "knockout-actual-home" || action === "knockout-actual-away") {
+          if (currentParticipant !== "wby") return false;
+        }
+        if ((action === "knockout-actual-home" || action === "knockout-actual-away") && finalScoreLocked(knockoutMatch)) return false;
+        if (action === "knockout-home-team") knockoutMatch.home = target.value.trim() || "TBD";
+        if (action === "knockout-away-team") knockoutMatch.away = target.value.trim() || "TBD";
+        if (action === "knockout-actual-home") knockoutMatch.actualHome = normalizeScore(target.value);
+        if (action === "knockout-actual-away") knockoutMatch.actualAway = normalizeScore(target.value);
+        if (action === "knockout-prediction-home" || action === "knockout-prediction-away") {
+          if (target.dataset.friend !== currentParticipant) return false;
+          if (predictionWindow(knockoutMatch).state !== "open") return false;
+          const key = knockoutPredictionKey(target.dataset.knockout, target.dataset.friend);
+          data.knockoutPredictions[key] = data.knockoutPredictions[key] || { home: "", away: "" };
+          data.knockoutPredictions[key][action === "knockout-prediction-home" ? "home" : "away"] = normalizeScore(target.value);
+        }
+        return true;
+      }
       const question = data.bonusQuestions.find(item => item.id === target.dataset.question);
+      const match = data.matches.find(item => item.id === target.dataset.match) ||
+        data.knockoutMatches?.find(item => item.id === target.dataset.match || item.id === target.dataset.knockout) ||
+        matchForBonus(question);
       if (!match && !action.includes("prediction") && !action.includes("bonus")) return false;
 
       if (action === "bonus-correct") {
         if (currentParticipant !== "wby" || !question) return false;
+        const bonusMatch = matchForBonus(question);
+        if (!bonusMatch || new Date() < kickoffAt(bonusMatch) || bonusCorrectLocked(bonusMatch)) return false;
         question.correctAnswer = target.value;
         return true;
       }
@@ -3192,6 +4174,10 @@
         renderMatches();
         return;
       }
+      if (event.target.id === "knockoutFriendFocus") {
+        renderKnockoutStage();
+        return;
+      }
 
       if (!handleDataEdit(event.target)) return;
       saveData();
@@ -3200,11 +4186,15 @@
 
     document.addEventListener("input", event => {
       const action = event.target.dataset.action;
-      const liveActions = ["actual-home", "actual-away", "prediction-home", "prediction-away"];
+      const liveActions = ["actual-home", "actual-away", "prediction-home", "prediction-away", "knockout-actual-home", "knockout-actual-away", "knockout-prediction-home", "knockout-prediction-away"];
       if (!liveActions.includes(action)) return;
       if (!handleDataEdit(event.target)) return;
       saveData();
-      refreshMatchScores(event.target.dataset.match);
+      if (event.target.dataset.match) refreshMatchScores(event.target.dataset.match);
+      if (event.target.dataset.knockout) {
+        refreshKnockoutScores(event.target.dataset.knockout);
+        renderKnockoutStats();
+      }
       renderSidePanel();
     });
 
@@ -3214,10 +4204,27 @@
         return;
       }
 
-      const tab = event.target.closest(".tab");
+      const knockoutTab = event.target.closest("[data-knockout-tab]");
+      if (knockoutTab) {
+        activeKnockoutTab = knockoutTab.dataset.knockoutTab;
+        renderKnockoutStats();
+        return;
+      }
+
+      const tab = event.target.closest("[data-tab]");
       if (tab) {
         activeTab = tab.dataset.tab;
         renderSidePanel();
+        return;
+      }
+
+      const stageTab = event.target.closest(".stage-tab");
+      if (stageTab) {
+        activeStage = stageTab.dataset.stage;
+        localStorage.setItem(`${STORAGE_KEY}-stage`, activeStage);
+        renderStage();
+        renderKnockoutStage();
+        renderKnockoutStats();
         return;
       }
 
@@ -3229,13 +4236,27 @@
         return;
       }
 
+      const knockoutDateButton = event.target.closest("[data-knockout-date]");
+      if (knockoutDateButton) {
+        activeKnockoutDate = knockoutDateButton.dataset.knockoutDate;
+        renderKnockoutDateFilter();
+        renderKnockoutStage();
+        return;
+      }
+
       const button = event.target.closest("button[data-action]");
       if (!button) return;
       const action = button.dataset.action;
+      if (action === "select-knockout") {
+        activeKnockoutMatch = button.dataset.knockout;
+        renderKnockoutStage();
+        return;
+      }
       if (action === "toggle-predictions") {
         if (expandedMatches.has(button.dataset.match)) expandedMatches.delete(button.dataset.match);
         else expandedMatches.add(button.dataset.match);
         renderMatches();
+        renderKnockoutStage();
       }
     });
 
