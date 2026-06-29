@@ -2501,6 +2501,15 @@
           points: 2,
           correctAnswer: ""
         }
+      ],
+      "2026-06-29||germany|paraguay": [
+        {
+          id: "germany-paraguay-wirtz-goal",
+          prompt: "维尔兹会进球吗",
+          options: ["YES", "NO"],
+          points: 1,
+          correctAnswer: ""
+        }
       ]
     };
     const CORRECTED_PREDICTIONS_BY_SIGNATURE = {
@@ -2770,6 +2779,11 @@
         clearedFriends.forEach(friendId => {
           delete upgraded.predictions[`${match.id}:${friendId}`];
         });
+      });
+      upgraded.knockoutMatches.forEach(match => {
+        const signature = fixtureSignature(match);
+        const bonusQuestions = BONUS_QUESTIONS_BY_SIGNATURE[signature] || [];
+        bonusQuestions.forEach(question => upsertBonusQuestion(upgraded, match, question));
       });
       Object.entries(STALE_PREDICTION_CORRECTIONS).forEach(([key, correction]) => {
         const prediction = upgraded.predictions[key];
@@ -3905,7 +3919,7 @@
       return `
         <div class="bonus-block">
           <div class="bonus-title">
-            <div><span>Bonus + 2</span> ${escapeHtml(question.prompt)}</div>
+            <div><span>Bonus ${escapeHtml(bonusPointsLabel(question))}</span> ${escapeHtml(question.prompt)}</div>
             <label>
               <span>Correct</span>
               <select data-action="bonus-correct" data-question="${question.id}" ${correctDisabled ? "disabled" : ""}>
