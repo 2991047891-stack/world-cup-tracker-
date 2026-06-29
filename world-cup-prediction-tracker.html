@@ -959,6 +959,14 @@
       cursor: not-allowed;
     }
 
+    .prediction-row.locked select,
+    .knockout-resolution.locked input,
+    .knockout-resolution.locked select {
+      background: #f0ece7;
+      color: #786f68;
+      cursor: not-allowed;
+    }
+
     .predictions {
       border-top: 1px solid var(--line);
       padding: 13px;
@@ -996,6 +1004,38 @@
       border: 1px solid #e3e9e6;
       border-radius: 8px;
       padding: 8px;
+    }
+
+    .knockout-resolution {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+      border-top: 1px dashed #d9e3de;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .knockout-resolution input,
+    .knockout-resolution select {
+      min-height: 32px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .knockout-resolution input {
+      width: 34px;
+      padding: 0;
+      text-align: center;
+    }
+
+    .knockout-resolution select {
+      min-width: 112px;
+      padding: 5px 8px;
     }
 
     .bonus-block {
@@ -1889,8 +1929,8 @@
           </div>
           <aside class="knockout-detail" id="knockoutDetail"></aside>
         </div>
-        <section class="knockout-stats" id="knockoutStats" aria-label="Knockout statistics"></section>
         <div class="match-list knockout-match-list" id="knockoutMatchList"></div>
+        <section class="knockout-stats" id="knockoutStats" aria-label="Knockout statistics"></section>
       </div>
     </section>
   </main>
@@ -2862,7 +2902,7 @@
           merged.knockoutMatches.push(structuredClone(match));
           return;
         }
-        ["home", "away", "actualHome", "actualAway"].forEach(field => {
+        ["home", "away", "actualHome", "actualAway", "extraHome", "extraAway", "penaltyWinner"].forEach(field => {
           if ((online[field] === "" || online[field] === undefined || online[field] === null) &&
               match[field] !== "" && match[field] !== undefined && match[field] !== null) {
             online[field] = match[field];
@@ -2875,6 +2915,13 @@
         const online = merged.knockoutPredictions[key];
         if (!online || online.home === "" || online.away === "") {
           merged.knockoutPredictions[key] = structuredClone(prediction);
+        } else {
+          ["extraHome", "extraAway", "penaltyWinner"].forEach(field => {
+            if ((online[field] === "" || online[field] === undefined || online[field] === null) &&
+                prediction[field] !== "" && prediction[field] !== undefined && prediction[field] !== null) {
+              online[field] = prediction[field];
+            }
+          });
         }
       });
 
@@ -3017,6 +3064,59 @@
       return points;
     }
 
+    function knockoutPredictionScore(match, prediction) {
+      if (!hasActual(match) || !prediction || prediction.home === "" || prediction.away === "") return null;
+      const actualHome = Number(match.actualHome);
+      const actualAway = Number(match.actualAway);
+      const predictedHome = Number(prediction.home);
+      const predictedAway = Number(prediction.away);
+      let points = 0;
+
+      if (actualHome === predictedHome && actualAway === predictedAway) {
+        points += 5;
+      } else {
+        if (resultType(actualHome, actualAway) === resultType(predictedHome, predictedAway)) points += 3;
+        if ((actualHome - actualAway) === (predictedHome - predictedAway)) points += 1;
+        if (actualHome === predictedHome) points += 1;
+        if (actualAway === predictedAway) points += 1;
+      }
+
+      if (actualHome !== actualAway || predictedHome !== predictedAway) return points;
+      if (!hasExtraActual(match) || !hasExtraPrediction(prediction)) return points;
+
+      const actualExtraHome = Number(match.extraHome);
+      const actualExtraAway = Number(match.extraAway);
+      const predictedExtraHome = Number(prediction.extraHome);
+      const predictedExtraAway = Number(prediction.extraAway);
+      if (actualExtraHome === predictedExtraHome && actualExtraAway === predictedExtraAway) {
+        points += 2;
+      } else if (resultType(actualExtraHome, actualExtraAway) === resultType(predictedExtraHome, predictedExtraAway)) {
+        points += 1;
+      }
+
+      if (actualExtraHome === actualExtraAway &&
+          predictedExtraHome === predictedExtraAway &&
+          match.penaltyWinner &&
+          prediction.penaltyWinner &&
+          match.penaltyWinner === prediction.penaltyWinner) {
+        points += 2;
+      }
+
+      return points;
+    }
+
+    function hasExtraActual(match) {
+      return match?.extraHome !== "" && match?.extraAway !== "" &&
+        match?.extraHome !== undefined && match?.extraAway !== undefined &&
+        Number.isInteger(Number(match.extraHome)) && Number.isInteger(Number(match.extraAway));
+    }
+
+    function hasExtraPrediction(prediction) {
+      return prediction?.extraHome !== "" && prediction?.extraAway !== "" &&
+        prediction?.extraHome !== undefined && prediction?.extraAway !== undefined &&
+        Number.isInteger(Number(prediction.extraHome)) && Number.isInteger(Number(prediction.extraAway));
+    }
+
     function friendStats() {
       return data.friends.map((friend, index) => {
         let points = 0;
@@ -3075,7 +3175,7 @@
         matches.forEach(match => {
           const prediction = data.knockoutPredictions?.[knockoutPredictionKey(match.id, friend.id)];
           if (prediction && prediction.home !== "" && prediction.away !== "") entered += 1;
-          const score = predictionScore(match, prediction);
+          const score = knockoutPredictionScore(match, prediction);
           if (score === null) return;
           const ah = Number(match.actualHome);
           const aa = Number(match.actualAway);
@@ -3083,6 +3183,9 @@
           const pa = Number(prediction.away);
           decided += 1;
           points += score;
+          bonusQuestionsForMatch(match).forEach(question => {
+            points += bonusScore(question, friend.id);
+          });
           totalError += Math.abs(ah - ph) + Math.abs(aa - pa);
           if (ah === ph && aa === pa) exact += 1;
           if (resultType(ah, aa) === resultType(ph, pa)) resultHits += 1;
@@ -3367,11 +3470,14 @@
             </div>
             <div class="score-rule-bar" aria-label="Knockout point-counting rule">
               <b>Score</b>
-              <span>Exact 5</span>
-              <span>Result +2</span>
+              <span>90 exact 5</span>
+              <span>90 result +3</span>
               <span>GD +1</span>
               <span>Home +1</span>
               <span>Away +1</span>
+              <span>ET exact +2</span>
+              <span>ET team +1</span>
+              <span>PK +2</span>
             </div>
           </div>
         </div>
@@ -3463,7 +3569,7 @@
 
       matches.forEach(match => {
         data.friends.forEach(friend => {
-          const score = predictionScore(match, data.knockoutPredictions?.[knockoutPredictionKey(match.id, friend.id)]);
+          const score = knockoutPredictionScore(match, data.knockoutPredictions?.[knockoutPredictionKey(match.id, friend.id)]);
           totals[friend.id] += score === null ? 0 : score;
           bonusQuestionsForMatch(match).forEach(question => {
             totals[friend.id] += bonusScore(question, friend.id);
@@ -3669,6 +3775,7 @@
             </span>
             <input value="${escapeHtml(match.away)}" data-action="knockout-away-team" data-knockout="${match.id}" title="Team name" ${wbyOnly ? "disabled" : ""}>
           </div>
+          ${knockoutActualResolutionMarkup(match, actualLocked, actualTitle)}
           <div class="prediction-header">
             <span>${expanded ? "All knockout predictions" : `${escapeHtml(currentFriend?.name || "Your")} knockout prediction`}</span>
             ${focus === "all" ? `<button class="text-button" type="button" data-action="toggle-predictions" data-match="${match.id}">${expanded ? "Hide others" : `Show others (${hiddenCount})`}</button>` : ""}
@@ -3682,17 +3789,57 @@
     function knockoutPredictionMarkup(match, friend) {
       const key = knockoutPredictionKey(match.id, friend.id);
       const prediction = data.knockoutPredictions[key] || { home: "", away: "" };
-      const points = predictionScore(match, prediction);
+      const points = knockoutPredictionScore(match, prediction);
       const windowState = predictionWindow(match);
       const locked = windowState.state !== "open" || friend.id !== currentParticipant;
       const title = friend.id === currentParticipant ? windowState.label : `Choose ${friend.name} above to edit this row`;
+      const predictsDraw = prediction.home !== "" && prediction.away !== "" && Number(prediction.home) === Number(prediction.away);
+      const predictsExtraDraw = predictsDraw && hasExtraPrediction(prediction) && Number(prediction.extraHome) === Number(prediction.extraAway);
       return `
         <div class="prediction-row ${locked ? "locked" : ""}">
           <div class="friend-name" title="${escapeHtml(friend.name)}">${escapeHtml(friend.name)}</div>
           <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(prediction.home ?? ""))}" data-action="knockout-prediction-home" data-knockout="${match.id}" data-friend="${friend.id}" title="${escapeHtml(title)}" ${locked ? "disabled" : ""}>
           <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(prediction.away ?? ""))}" data-action="knockout-prediction-away" data-knockout="${match.id}" data-friend="${friend.id}" title="${escapeHtml(title)}" ${locked ? "disabled" : ""}>
           <div class="points">${points === null ? "-" : `${points} pts`}</div>
+          ${predictsDraw ? knockoutPredictionResolutionMarkup(match, friend, prediction, locked, title, predictsExtraDraw) : ""}
         </div>
+      `;
+    }
+
+    function knockoutPredictionResolutionMarkup(match, friend, prediction, locked, title, showPenalty) {
+      return `
+        <div class="knockout-resolution ${locked ? "locked" : ""}">
+          <span>ET</span>
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(prediction.extraHome ?? ""))}" data-action="knockout-prediction-extra-home" data-knockout="${match.id}" data-friend="${friend.id}" title="${escapeHtml(title)}" placeholder="-" ${locked ? "disabled" : ""}>
+          <b>-</b>
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(prediction.extraAway ?? ""))}" data-action="knockout-prediction-extra-away" data-knockout="${match.id}" data-friend="${friend.id}" title="${escapeHtml(title)}" placeholder="-" ${locked ? "disabled" : ""}>
+          ${showPenalty ? penaltyWinnerSelectMarkup("knockout-prediction-penalty-winner", match, friend.id, prediction.penaltyWinner || "", locked, title) : ""}
+        </div>
+      `;
+    }
+
+    function knockoutActualResolutionMarkup(match, locked, title) {
+      if (!hasActual(match) || Number(match.actualHome) !== Number(match.actualAway)) return "";
+      const showPenalty = hasExtraActual(match) && Number(match.extraHome) === Number(match.extraAway);
+      return `
+        <div class="knockout-resolution ${locked ? "locked" : ""}">
+          <span>ET result</span>
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.extraHome ?? ""))}" data-action="knockout-actual-extra-home" data-knockout="${match.id}" title="${escapeHtml(title)}" placeholder="-" ${locked ? "disabled" : ""}>
+          <b>-</b>
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.extraAway ?? ""))}" data-action="knockout-actual-extra-away" data-knockout="${match.id}" title="${escapeHtml(title)}" placeholder="-" ${locked ? "disabled" : ""}>
+          ${showPenalty ? penaltyWinnerSelectMarkup("knockout-actual-penalty-winner", match, "", match.penaltyWinner || "", locked, title) : ""}
+        </div>
+      `;
+    }
+
+    function penaltyWinnerSelectMarkup(action, match, friendId, value, disabled, title) {
+      const friendAttr = friendId ? ` data-friend="${escapeHtml(friendId)}"` : "";
+      return `
+        <select data-action="${action}" data-knockout="${match.id}"${friendAttr} title="${escapeHtml(title)}" ${disabled ? "disabled" : ""}>
+          <option value="" ${value === "" ? "selected" : ""}>PK winner</option>
+          <option value="home" ${value === "home" ? "selected" : ""}>${escapeHtml(match.home)}</option>
+          <option value="away" ${value === "away" ? "selected" : ""}>${escapeHtml(match.away)}</option>
+        </select>
       `;
     }
 
@@ -3729,6 +3876,7 @@
                 ${match.city ? `<span class="pill">${escapeHtml(match.city)}</span>` : ""}
                 <span class="pill ${windowState.state}">${escapeHtml(windowState.label)}</span>
               </div>
+              ${knockoutActualResolutionMarkup(match, actualLocked, actualTitle)}
             </div>
           </div>
           <div class="predictions">
@@ -4108,20 +4256,33 @@
       if (action.startsWith("knockout-")) {
         if (!knockoutMatch) return false;
         if (action === "knockout-home-team" || action === "knockout-away-team" ||
-            action === "knockout-actual-home" || action === "knockout-actual-away") {
+            action === "knockout-actual-home" || action === "knockout-actual-away" ||
+            action === "knockout-actual-extra-home" || action === "knockout-actual-extra-away" ||
+            action === "knockout-actual-penalty-winner") {
           if (currentParticipant !== "wby") return false;
         }
-        if ((action === "knockout-actual-home" || action === "knockout-actual-away") && finalScoreLocked(knockoutMatch)) return false;
+        if ((action === "knockout-actual-home" || action === "knockout-actual-away" ||
+             action === "knockout-actual-extra-home" || action === "knockout-actual-extra-away" ||
+             action === "knockout-actual-penalty-winner") && finalScoreLocked(knockoutMatch)) return false;
         if (action === "knockout-home-team") knockoutMatch.home = target.value.trim() || "TBD";
         if (action === "knockout-away-team") knockoutMatch.away = target.value.trim() || "TBD";
         if (action === "knockout-actual-home") knockoutMatch.actualHome = normalizeScore(target.value);
         if (action === "knockout-actual-away") knockoutMatch.actualAway = normalizeScore(target.value);
-        if (action === "knockout-prediction-home" || action === "knockout-prediction-away") {
+        if (action === "knockout-actual-extra-home") knockoutMatch.extraHome = normalizeScore(target.value);
+        if (action === "knockout-actual-extra-away") knockoutMatch.extraAway = normalizeScore(target.value);
+        if (action === "knockout-actual-penalty-winner") knockoutMatch.penaltyWinner = ["home", "away"].includes(target.value) ? target.value : "";
+        if (action === "knockout-prediction-home" || action === "knockout-prediction-away" ||
+            action === "knockout-prediction-extra-home" || action === "knockout-prediction-extra-away" ||
+            action === "knockout-prediction-penalty-winner") {
           if (target.dataset.friend !== currentParticipant) return false;
           if (predictionWindow(knockoutMatch).state !== "open") return false;
           const key = knockoutPredictionKey(target.dataset.knockout, target.dataset.friend);
           data.knockoutPredictions[key] = data.knockoutPredictions[key] || { home: "", away: "" };
-          data.knockoutPredictions[key][action === "knockout-prediction-home" ? "home" : "away"] = normalizeScore(target.value);
+          if (action === "knockout-prediction-home") data.knockoutPredictions[key].home = normalizeScore(target.value);
+          if (action === "knockout-prediction-away") data.knockoutPredictions[key].away = normalizeScore(target.value);
+          if (action === "knockout-prediction-extra-home") data.knockoutPredictions[key].extraHome = normalizeScore(target.value);
+          if (action === "knockout-prediction-extra-away") data.knockoutPredictions[key].extraAway = normalizeScore(target.value);
+          if (action === "knockout-prediction-penalty-winner") data.knockoutPredictions[key].penaltyWinner = ["home", "away"].includes(target.value) ? target.value : "";
         }
         return true;
       }
@@ -4186,13 +4347,14 @@
 
     document.addEventListener("input", event => {
       const action = event.target.dataset.action;
-      const liveActions = ["actual-home", "actual-away", "prediction-home", "prediction-away", "knockout-actual-home", "knockout-actual-away", "knockout-prediction-home", "knockout-prediction-away"];
+      const liveActions = ["actual-home", "actual-away", "prediction-home", "prediction-away", "knockout-actual-home", "knockout-actual-away", "knockout-actual-extra-home", "knockout-actual-extra-away", "knockout-prediction-home", "knockout-prediction-away", "knockout-prediction-extra-home", "knockout-prediction-extra-away"];
       if (!liveActions.includes(action)) return;
       if (!handleDataEdit(event.target)) return;
       saveData();
       if (event.target.dataset.match) refreshMatchScores(event.target.dataset.match);
       if (event.target.dataset.knockout) {
         refreshKnockoutScores(event.target.dataset.knockout);
+        renderKnockoutStage();
         renderKnockoutStats();
       }
       renderSidePanel();
