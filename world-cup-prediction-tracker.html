@@ -2015,6 +2015,16 @@
       k32: { date: "2026-07-19", time: "12:00", city: "New York/New Jersey" }
     };
     KNOCKOUT_STARTER_MATCHES.forEach(match => Object.assign(match, KNOCKOUT_SCHEDULE_BY_ID[match.id] || {}));
+    const KNOCKOUT_RESULT_UPDATES = {
+      k01: { actualHome: 1, actualAway: 1, extraHome: 1, extraAway: 1, penaltyWinner: "away" },
+      k04: { actualHome: 1, actualAway: 1, extraHome: 1, extraAway: 1, penaltyWinner: "away" }
+    };
+    const KNOCKOUT_PREDICTION_UPDATES = {
+      "k09:syz": { home: 4, away: 3 }
+    };
+    const BONUS_CORRECT_UPDATES = {
+      "germany-paraguay-wirtz-goal": "NO"
+    };
     const PLAYER_PHOTOS = {
       syz: "assets/player-syz.jpeg"
     };
@@ -2715,6 +2725,13 @@
         }
         upgraded.knockoutMatches.push(structuredClone(match));
       });
+      Object.entries(KNOCKOUT_RESULT_UPDATES).forEach(([matchId, result]) => {
+        const match = upgraded.knockoutMatches.find(item => item.id === matchId);
+        if (match) Object.assign(match, structuredClone(result));
+      });
+      Object.entries(KNOCKOUT_PREDICTION_UPDATES).forEach(([key, prediction]) => {
+        upgraded.knockoutPredictions[key] = structuredClone(prediction);
+      });
       upgraded.matches.forEach(match => {
         const signature = fixtureSignature(match);
         match.time = MATCH_TIMES_LA_BY_SIGNATURE[signature] || match.time || "12:00";
@@ -2784,6 +2801,10 @@
         const signature = fixtureSignature(match);
         const bonusQuestions = BONUS_QUESTIONS_BY_SIGNATURE[signature] || [];
         bonusQuestions.forEach(question => upsertBonusQuestion(upgraded, match, question));
+      });
+      Object.entries(BONUS_CORRECT_UPDATES).forEach(([questionId, correctAnswer]) => {
+        const question = upgraded.bonusQuestions.find(item => item.id === questionId);
+        if (question) question.correctAnswer = correctAnswer;
       });
       Object.entries(STALE_PREDICTION_CORRECTIONS).forEach(([key, correction]) => {
         const prediction = upgraded.predictions[key];
@@ -3032,6 +3053,38 @@
       const windowState = finalScoreWindow(match);
       if (windowState.locked) return windowState.label;
       return currentParticipant === "wby" ? windowState.label : "Only WBY can edit final scores";
+    }
+
+    function knockoutExtraScoreLocked(match) {
+      return knockoutExtraScoreWindow(match).locked;
+    }
+
+    function knockoutExtraScoreWindow(match) {
+      const kickoff = kickoffAt(match);
+      if (!kickoff) return { locked: true, label: "Set kickoff time" };
+      const now = new Date();
+      const closes = new Date(kickoff.getTime() + 4 * 60 * 60 * 1000);
+      if (now < kickoff) return { locked: true, label: `ET result unlocks ${formatDateTime(kickoff)}` };
+      if (!hasActual(match) || Number(match.actualHome) !== Number(match.actualAway)) return { locked: true, label: "ET result only needed after a 90-min draw" };
+      if (!hasExtraActual(match)) return { locked: false, label: "ET result open until entered" };
+      if (now >= closes) return { locked: true, label: "Historical ET result is locked" };
+      return { locked: false, label: `ET result editable until ${formatTime(closes)} LA` };
+    }
+
+    function knockoutPenaltyLocked(match) {
+      return knockoutPenaltyWindow(match).locked;
+    }
+
+    function knockoutPenaltyWindow(match) {
+      const kickoff = kickoffAt(match);
+      if (!kickoff) return { locked: true, label: "Set kickoff time" };
+      const now = new Date();
+      const closes = new Date(kickoff.getTime() + 4 * 60 * 60 * 1000);
+      if (now < kickoff) return { locked: true, label: `PK winner unlocks ${formatDateTime(kickoff)}` };
+      if (!hasExtraActual(match) || Number(match.extraHome) !== Number(match.extraAway)) return { locked: true, label: "PK winner only needed after an ET draw" };
+      if (!match.penaltyWinner) return { locked: false, label: "PK winner open until entered" };
+      if (now >= closes) return { locked: true, label: "Historical PK winner is locked" };
+      return { locked: false, label: `PK winner editable until ${formatTime(closes)} LA` };
     }
 
     function predictionWindow(match) {
@@ -3835,13 +3888,19 @@
     function knockoutActualResolutionMarkup(match, locked, title) {
       if (!hasActual(match) || Number(match.actualHome) !== Number(match.actualAway)) return "";
       const showPenalty = hasExtraActual(match) && Number(match.extraHome) === Number(match.extraAway);
+      const extraWindow = knockoutExtraScoreWindow(match);
+      const penaltyWindow = knockoutPenaltyWindow(match);
+      const extraLocked = currentParticipant !== "wby" || extraWindow.locked;
+      const penaltyLocked = currentParticipant !== "wby" || penaltyWindow.locked;
+      const extraTitle = currentParticipant === "wby" ? extraWindow.label : "Only WBY can edit final scores";
+      const penaltyTitle = currentParticipant === "wby" ? penaltyWindow.label : "Only WBY can edit final scores";
       return `
-        <div class="knockout-resolution ${locked ? "locked" : ""}">
+        <div class="knockout-resolution ${extraLocked && (!showPenalty || penaltyLocked) ? "locked" : ""}">
           <span>ET result</span>
-          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.extraHome ?? ""))}" data-action="knockout-actual-extra-home" data-knockout="${match.id}" title="${escapeHtml(title)}" placeholder="-" ${locked ? "disabled" : ""}>
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.extraHome ?? ""))}" data-action="knockout-actual-extra-home" data-knockout="${match.id}" title="${escapeHtml(extraTitle)}" placeholder="-" ${extraLocked ? "disabled" : ""}>
           <b>-</b>
-          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.extraAway ?? ""))}" data-action="knockout-actual-extra-away" data-knockout="${match.id}" title="${escapeHtml(title)}" placeholder="-" ${locked ? "disabled" : ""}>
-          ${showPenalty ? penaltyWinnerSelectMarkup("knockout-actual-penalty-winner", match, "", match.penaltyWinner || "", locked, title) : ""}
+          <input type="number" min="0" inputmode="numeric" value="${escapeHtml(String(match.extraAway ?? ""))}" data-action="knockout-actual-extra-away" data-knockout="${match.id}" title="${escapeHtml(extraTitle)}" placeholder="-" ${extraLocked ? "disabled" : ""}>
+          ${showPenalty ? penaltyWinnerSelectMarkup("knockout-actual-penalty-winner", match, "", match.penaltyWinner || "", penaltyLocked, penaltyTitle) : ""}
         </div>
       `;
     }
@@ -4275,9 +4334,9 @@
             action === "knockout-actual-penalty-winner") {
           if (currentParticipant !== "wby") return false;
         }
-        if ((action === "knockout-actual-home" || action === "knockout-actual-away" ||
-             action === "knockout-actual-extra-home" || action === "knockout-actual-extra-away" ||
-             action === "knockout-actual-penalty-winner") && finalScoreLocked(knockoutMatch)) return false;
+        if ((action === "knockout-actual-home" || action === "knockout-actual-away") && finalScoreLocked(knockoutMatch)) return false;
+        if ((action === "knockout-actual-extra-home" || action === "knockout-actual-extra-away") && knockoutExtraScoreLocked(knockoutMatch)) return false;
+        if (action === "knockout-actual-penalty-winner" && knockoutPenaltyLocked(knockoutMatch)) return false;
         if (action === "knockout-home-team") knockoutMatch.home = target.value.trim() || "TBD";
         if (action === "knockout-away-team") knockoutMatch.away = target.value.trim() || "TBD";
         if (action === "knockout-actual-home") knockoutMatch.actualHome = normalizeScore(target.value);
