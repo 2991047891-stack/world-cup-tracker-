@@ -156,6 +156,13 @@
       text-align: center;
     }
 
+    .leader-copy {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+      justify-items: center;
+    }
+
     .identity {
       display: flex;
       align-items: center;
@@ -1249,14 +1256,19 @@
       }
 
       .leader-spotlight {
-        min-width: 90px;
+        min-width: 0;
+        gap: 5px;
       }
 
       .leader-photo-wrap {
-        width: 86px;
+        width: 76px;
       }
 
       .leader-spotlight p {
+        font-size: 10px;
+      }
+
+      .leader-spotlight span {
         font-size: 10px;
       }
 
@@ -1356,14 +1368,39 @@
       }
 
       .fixture {
-        grid-template-columns: 1fr;
-        gap: 5px;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 9px;
       }
 
-      .team,
-      .team:first-child,
+      .team {
+        font-size: 15px;
+      }
+
+      .team:first-child {
+        text-align: right;
+      }
+
+      .team:last-child {
+        text-align: left;
+      }
+
       .versus {
         text-align: center;
+        min-width: 72px;
+        padding: 5px;
+      }
+
+      .score-editor {
+        grid-template-columns: 28px auto 28px;
+        gap: 3px;
+      }
+
+      .score-editor input {
+        width: 28px;
+        height: 30px;
+        min-height: 30px;
+        font-size: 13px;
+        line-height: 30px;
       }
 
       .points {
@@ -1385,8 +1422,10 @@
           <img id="leaderPhotoImg" alt="" hidden>
           <div class="leader-photo-fallback" id="leaderPhotoFallback">--</div>
         </div>
-        <p>the Player of the Guess</p>
-        <span id="leaderPhotoPoints">0 pts</span>
+        <div class="leader-copy">
+          <p>the Player of the Guess</p>
+          <span id="leaderPhotoPoints">0 pts</span>
+        </div>
       </section>
       <div class="identity">
         <span>Editing as <b id="identityName">LPR</b></span>
@@ -2020,7 +2059,10 @@
       k04: { actualHome: 1, actualAway: 1, extraHome: 1, extraAway: 1, penaltyWinner: "away" }
     };
     const KNOCKOUT_PREDICTION_UPDATES = {
-      "k09:syz": { home: 4, away: 3 }
+      "k09:syz": { home: 4, away: 3 },
+      "k10:syz": { home: 2, away: 2, extraHome: 3, extraAway: 3, penaltyWinner: "away" },
+      "k10:czy": { home: 1, away: 2 },
+      "k10:lpr": { home: 1, away: 2 }
     };
     const BONUS_CORRECT_UPDATES = {
       "germany-paraguay-wirtz-goal": "NO"
@@ -3293,7 +3335,8 @@
     }
 
     function renderLeaderSpotlight() {
-      const leader = friendStats()[0];
+      const isKnockout = activeStage === "knockout";
+      const leader = (isKnockout ? knockoutStats() : friendStats())[0];
       const img = document.querySelector("#leaderPhotoImg");
       const fallback = document.querySelector("#leaderPhotoFallback");
       const points = document.querySelector("#leaderPhotoPoints");
@@ -4431,6 +4474,7 @@
         renderKnockoutStats();
       }
       renderSidePanel();
+      renderLeaderSpotlight();
     });
 
     document.addEventListener("click", event => {
@@ -4458,6 +4502,7 @@
         activeStage = stageTab.dataset.stage;
         localStorage.setItem(`${STORAGE_KEY}-stage`, activeStage);
         renderStage();
+        renderLeaderSpotlight();
         renderKnockoutStage();
         renderKnockoutStats();
         return;
