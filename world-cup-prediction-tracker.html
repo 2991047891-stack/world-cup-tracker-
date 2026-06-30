@@ -3184,7 +3184,7 @@
       if (actualHome === predictedHome && actualAway === predictedAway) {
         points += 5;
       } else {
-        if (resultType(actualHome, actualAway) === resultType(predictedHome, predictedAway)) points += 3;
+        if (resultType(actualHome, actualAway) === resultType(predictedHome, predictedAway)) points += 2;
         if ((actualHome - actualAway) === (predictedHome - predictedAway)) points += 1;
         if (actualHome === predictedHome) points += 1;
         if (actualAway === predictedAway) points += 1;
@@ -3581,7 +3581,7 @@
             <div class="score-rule-bar" aria-label="Knockout point-counting rule">
               <b>Score</b>
               <span>90 exact 5</span>
-              <span>90 result +3</span>
+              <span>90 result +2</span>
               <span>GD +1</span>
               <span>Home +1</span>
               <span>Away +1</span>
